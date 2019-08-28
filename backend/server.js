@@ -3,7 +3,7 @@ const express = require('express');
 var cors = require('cors');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-const Data = require('./data');
+const Users = require('./users');
 
 const API_PORT = 3001;
 const app = express();
@@ -12,7 +12,7 @@ const router = express.Router();
 
 // this is our MongoDB database
 const dbRoute =
-  'mongodb+srv://r-beta:1980Dbz4@cluster0-chh6c.mongodb.net/test?retryWrites=true&w=majority';
+  'mongodb+srv://rw-beta:1980Dbz4@cluster0-chh6c.mongodb.net/sample_mflix?retryWrites=true&w=majority';
 
 // connects our back end code with the database
 mongoose.connect(dbRoute, { useNewUrlParser: true });
@@ -32,8 +32,8 @@ app.use(logger('dev'));
 
 // this is our get method
 // this method fetches all available data in our database
-router.get('/getData', (req, res) => {
-  Data.find((err, data) => {
+router.get('/getUsers', (req, res) => {
+  Users.find((err, data) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
   });
@@ -41,9 +41,9 @@ router.get('/getData', (req, res) => {
 
 // this is our update method
 // this method overwrites existing data in our database
-router.post('/updateData', (req, res) => {
-  const { id, update } = req.body;
-  Data.findByIdAndUpdate(id, update, (err) => {
+router.post('/updateUser', (req, res) => {
+  const { _id, update } = req.body;
+  Users.findByIdAndUpdate(_id, update, (err) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
   });
@@ -51,9 +51,9 @@ router.post('/updateData', (req, res) => {
 
 // this is our delete method
 // this method removes existing data in our database
-router.delete('/deleteData', (req, res) => {
-  const { id } = req.body;
-  Data.findByIdAndRemove(id, (err) => {
+router.delete('/deleteUser', (req, res) => {
+  const { _id } = req.body;
+  Users.findByIdAndRemove(_id, (err) => {
     if (err) return res.send(err);
     return res.json({ success: true });
   });
@@ -61,19 +61,19 @@ router.delete('/deleteData', (req, res) => {
 
 // this is our create methid
 // this method adds new data in our database
-router.post('/putData', (req, res) => {
-  let data = new Data();
+router.post('/putUser', (req, res) => {
+  let data = new Users();
 
-  const { id, message } = req.body;
+  const { name } = req.body;
 
-  if ((!id && id !== 0) || !message) {
+  if (!name) {
     return res.json({
       success: false,
       error: 'INVALID INPUTS',
     });
   }
-  data.message = message;
-  data.id = id;
+  data.name = name;
+  data._id = new mongoose.Types.ObjectId()
   data.save((err) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
