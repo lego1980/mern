@@ -4,24 +4,20 @@ import axios from 'axios';
 
 class App extends Component {
   // initialize our state
-  constructor(props){
-    super(props);
-    this.state = {
-      data: null,
-      id: 0,
-      title: null,
-      intervalIsSet: false,
-      idToDelete: null,
-      idToUpdate: null,
-      objectToUpdate: null,
-    }
-  }
+  state = {
+    data: [],
+    id: 0,
+    name: null,
+    intervalIsSet: false,
+    idToDelete: null,
+    idToUpdate: null,
+    objectToUpdate: null,
+  };
 
   // when component mounts, first thing it does is fetch all existing data in our db
   // then we incorporate a polling logic so that we can easily see if our db has
   // changed and implement those changes into our UI
   componentDidMount() {
-    
     this.getDataFromDb();
     // if (!this.state.intervalIsSet) {
     //   let interval = setInterval(this.getDataFromDb, 1000);
@@ -46,18 +42,15 @@ class App extends Component {
   // our first get method that uses our backend api to
   // fetch data from our data base
   getDataFromDb = () => {
-    let that = this;
-    axios.get('http://localhost:3001/api/pages')
-      .then((data) => {
-        console.log(data)
-        that.setState({ data: data.data.response })
-      })
+    fetch('http://localhost:3001/api/getUsers')
+      .then((data) => data.json())
+      .then((res) => this.setState({ data: res.data }));
   };
 
   // our put method that uses our backend api
   // to create new query into our data base
   putDataToDB = (message) => {
-    axios.post('http://localhost:3001/api/v1/putUser', {
+    axios.post('http://localhost:3001/api/putUser', {
       name: message,
     });
   };
@@ -73,7 +66,7 @@ class App extends Component {
       }
     });
 
-    axios.delete('http://localhost:3001/api/v1/deleteUser', {
+    axios.delete('http://localhost:3001/api/deleteUser', {
       data: {
         _id: objIdToDelete,
       },
@@ -90,7 +83,7 @@ class App extends Component {
       }
     });
 
-    axios.post('http://localhost:3001/api/v1/updateUser', {
+    axios.post('http://localhost:3001/api/updateUser', {
       _id: objIdToUpdate,
       update: { name: updateToApply },
     });
@@ -101,49 +94,27 @@ class App extends Component {
   // see them render into our screen
   render() {
     const { data } = this.state;
-    console.log("data",data)
     return (
       <div>
         <ul>
-          {
-            data === null
+          {data.length <= 0
             ? 'NO DB ENTRIES YET'
-            : data.pages.map((dat) => (
+            : data.map((dat) => (
                 <li style={{ padding: '10px' }} key={dat._id}>
-                  <span style={{ color: 'gray' }}>id:</span>{dat._id}<br />
-                  <span style={{ color: 'gray' }}>subtitle:</span>{dat.subtitle}<br />
-                  <span style={{ color: 'gray' }}>description:</span>{dat.description}<br />
-                  <span style={{ color: 'gray' }}>keywords:</span>{dat.keywords}<br />
-                  <span style={{ color: 'gray' }}>content:</span>{dat.content}<br />
-                  <span style={{ color: 'gray' }}>likes:</span>{dat.likes}<br />
-                  
-                  {
-                    dat.images.length !== 0
-                    ?
-                      // <span style={{ color: 'gray' }}>No. of Images {dat.images.length} </span>
-                      dat.images.map((image, i) => (
-                        <>
-                          <hr />
-                          <span style={{ color: 'gray' }}>image title {i}: </span> {image.title} <br />
-                          <span style={{ color: 'gray' }}>image alt {i}: </span> {image.alt} <br />
-                          <span style={{ color: 'gray' }}>image src {i}: </span> {image.src} <br />
-                        </>
-                      ))
-                    :
-                      null
-                  }
+                  <span style={{ color: 'gray' }}> id: </span> {dat._id} <br />
+                  <span style={{ color: 'gray' }}> data: </span>
+                  {dat.name}
                 </li>
-              ))
-            }
+              ))}
         </ul>
         <div style={{ padding: '10px' }}>
           <input
             type="text"
-            onChange={(e) => this.setState({ title: e.target.value })}
+            onChange={(e) => this.setState({ name: e.target.value })}
             placeholder="add something in the database"
             style={{ width: '200px' }}
           />
-          <button onClick={() => this.putDataToDB(this.state.title)}>
+          <button onClick={() => this.putDataToDB(this.state.name)}>
             ADD
           </button>
         </div>
