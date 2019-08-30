@@ -7,9 +7,20 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      data: null,
-      id: 0,
+      http: "http://",
+      https: "https://",
+      apiVersion: "1.0",
+      api: "localhost:3001/api/",
+      apiUrl: null,
+      _id: 0,
       title: null,
+      subtitle: null,
+      description: null,
+      keywords: null,
+      content: null,
+      likes: 0,
+      images: [],
+      data: null,
       intervalIsSet: false,
       idToDelete: null,
       idToUpdate: null,
@@ -20,6 +31,10 @@ class App extends Component {
   // when component mounts, first thing it does is fetch all existing data in our db
   // then we incorporate a polling logic so that we can easily see if our db has
   // changed and implement those changes into our UI
+  componentWillMount() {
+    this.setState({ apiUrl: this.state.http +  this.state.api + this.state.apiVersion });
+  }
+  
   componentDidMount() {
     
     this.getDataFromDb();
@@ -47,7 +62,7 @@ class App extends Component {
   // fetch data from our data base
   getDataFromDb = () => {
     let that = this;
-    axios.get('http://localhost:3001/api/pages')
+    axios.get(this.state.apiUrl+'/pages')
       .then((data) => {
         console.log(data)
         that.setState({ data: data.data.response })
@@ -57,42 +72,36 @@ class App extends Component {
   // our put method that uses our backend api
   // to create new query into our data base
   putDataToDB = (message) => {
-    axios.post('http://localhost:3001/api/v1/putUser', {
-      name: message,
+    axios.post(this.state.apiUrl+'/pages', {
+      title: "This is new page added",
+      subtitle: "this is the subtitle",
+      description: "description is added",
+      keywords : "keywords is added",
+      content: "content is added",
+      // likes: 0,
+      images: [],
     });
   };
 
   // our delete method that uses our backend api
   // to remove existing database information
   deleteFromDB = (idTodelete) => {
-    parseInt(idTodelete);
-    let objIdToDelete = null;
-    this.state.data.forEach((dat) => {
-      if (dat._id == idTodelete) {
-        objIdToDelete = dat._id;
-      }
-    });
-
-    axios.delete('http://localhost:3001/api/v1/deleteUser', {
-      data: {
-        _id: objIdToDelete,
-      },
-    });
+    let objIdToDelete = idTodelete;
+    axios.delete(this.state.apiUrl+'/pages/'+objIdToDelete);
   };
 
   // our update method that uses our backend api
   // to overwrite existing data base information
   updateDB = (idToUpdate, updateToApply) => {
-    let objIdToUpdate = null;
-    this.state.data.forEach((dat) => {
-      if (dat._id == idToUpdate) {
-        objIdToUpdate = dat._id;
-      }
-    });
-
-    axios.post('http://localhost:3001/api/v1/updateUser', {
-      _id: objIdToUpdate,
-      update: { name: updateToApply },
+    let objIdToUpdate = idToUpdate;
+    axios.post(this.state.apiUrl+'/pages/'+objIdToUpdate, {
+      title: "UPDATE this is new title",
+      subtitle: "UPDATE this is the subtitle",
+      description: "UPDATE description is added",
+      keywords : "UPDATE keywords is added",
+      content: "UPDATE content is added",
+      likes: 0,
+      images: []
     });
   };
 
@@ -104,38 +113,6 @@ class App extends Component {
     console.log("data",data)
     return (
       <div>
-        <ul>
-          {
-            data === null
-            ? 'NO DB ENTRIES YET'
-            : data.pages.map((dat) => (
-                <li style={{ padding: '10px' }} key={dat._id}>
-                  <span style={{ color: 'gray' }}>id:</span>{dat._id}<br />
-                  <span style={{ color: 'gray' }}>subtitle:</span>{dat.subtitle}<br />
-                  <span style={{ color: 'gray' }}>description:</span>{dat.description}<br />
-                  <span style={{ color: 'gray' }}>keywords:</span>{dat.keywords}<br />
-                  <span style={{ color: 'gray' }}>content:</span>{dat.content}<br />
-                  <span style={{ color: 'gray' }}>likes:</span>{dat.likes}<br />
-                  
-                  {
-                    dat.images.length !== 0
-                    ?
-                      // <span style={{ color: 'gray' }}>No. of Images {dat.images.length} </span>
-                      dat.images.map((image, i) => (
-                        <>
-                          <hr />
-                          <span style={{ color: 'gray' }}>image title {i}: </span> {image.title} <br />
-                          <span style={{ color: 'gray' }}>image alt {i}: </span> {image.alt} <br />
-                          <span style={{ color: 'gray' }}>image src {i}: </span> {image.src} <br />
-                        </>
-                      ))
-                    :
-                      null
-                  }
-                </li>
-              ))
-            }
-        </ul>
         <div style={{ padding: '10px' }}>
           <input
             type="text"
@@ -186,6 +163,42 @@ class App extends Component {
           >
             LOAD DATA
           </button>
+          <hr />
+          <div>
+            <ul>
+              {
+                data === null
+                ? 'NO DB ENTRIES YET'
+                : data.pages.map((dat) => (
+                    <li style={{ padding: '10px' }} key={"pages-"+dat._id}>
+                      <span style={{ color: 'gray' }}>id:</span>{dat._id}<br />
+                      <span style={{ color: 'gray' }}>title:</span>{dat.title}<br />
+                      <span style={{ color: 'gray' }}>subtitle:</span>{dat.subtitle}<br />
+                      <span style={{ color: 'gray' }}>description:</span>{dat.description}<br />
+                      <span style={{ color: 'gray' }}>keywords:</span>{dat.keywords}<br />
+                      <span style={{ color: 'gray' }}>content:</span>{dat.content}<br />
+                      <span style={{ color: 'gray' }}>likes:</span>{dat.likes}<br />
+                      
+                      {
+                        dat.images.length !== 0
+                        ?
+                          // <span style={{ color: 'gray' }}>No. of Images {dat.images.length} </span>
+                          dat.images.map((image, i) => (
+                            <div key={"image-"+i} >
+                              <hr />
+                              <span key={"image-title-"+i} style={{ color: 'gray' }}>image title {i}: </span> {image.title} <br />
+                              <span key={"image-alt-"+i} style={{ color: 'gray' }}>image alt {i}: </span> {image.alt} <br />
+                              <span key={"image-src-"+i} style={{ color: 'gray' }}>image src {i}: </span> {image.src} <br />
+                            </div>
+                          ))
+                        :
+                          <hr/>
+                      }
+                    </li>
+                  ))
+              }
+            </ul>
+          </div>
       </div>
     );
   }

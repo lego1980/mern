@@ -12,7 +12,7 @@ app.use(cors());
 const apiVersion = 1.0;
 
 // routes
-const pagesRoute = require('./routes/pagesRoute');
+const versionApiRoute = require('./routes/versionApiRoute');
 
 // this is our MongoDB database
 const dbRoute = 'mongodb+srv://rw-beta:1980Dbz4@cluster0-chh6c.mongodb.net/beta_db?retryWrites=true&w=majority';
@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 app.use(logger('dev'));
 
 // append /api for our http requests
-app.use('/api', pagesRoute);
+app.use('/api', versionApiRoute);
 
 // launch our backend into a port
 app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
