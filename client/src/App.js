@@ -1,12 +1,19 @@
-// /client/App.js
+// core
 import React, { Component } from 'react';
 import axios from 'axios';
+import './App.css'
+
+// components
+import PageSelect from './components/PageSelect';
+import PageForm from './components/PageForm';
+import PageTable from './components/PageTable';
 
 class App extends Component {
   // initialize our state
   constructor(props){
     super(props);
     this.state = {
+      selectedItem : null,      
       http: "http://",
       https: "https://",
       apiVersion: "1.0",
@@ -28,43 +35,34 @@ class App extends Component {
     }
   }
 
-  // when component mounts, first thing it does is fetch all existing data in our db
-  // then we incorporate a polling logic so that we can easily see if our db has
-  // changed and implement those changes into our UI
+  setSelection = (id) => {
+    let that = this;
+    console.log('setSelection',id);        
+    if (id !== null && id !== 'add') {
+      let item = this.state.data.pages.find(
+        ({ _id }) => _id === id
+      );
+      that.setState({ selectedItem : item })  
+    } else {
+      that.setState({ selectedItem : null })  
+    }
+  }
+
   componentWillMount() {
     this.setState({ apiUrl: this.state.http +  this.state.api + this.state.apiVersion });
   }
   
-  componentDidMount() {
-    
+  componentDidMount() {    
     this.getDataFromDb();
-    // if (!this.state.intervalIsSet) {
-    //   let interval = setInterval(this.getDataFromDb, 1000);
-    //   this.setState({ intervalIsSet: interval });
-    // }
   }
 
-  // never let a process live forever
-  // always kill a process everytime we are done using it
   componentWillUnmount() {
-    // if (this.state.intervalIsSet) {
-    //   clearInterval(this.state.intervalIsSet);
-    //   this.setState({ intervalIsSet: null });
-    // }
   }
 
-  // just a note, here, in the front end, we use the id key of our data object
-  // in order to identify which we want to Update or delete.
-  // for our back end, we use the object id assigned by MongoDB to modify
-  // data base entries
-
-  // our first get method that uses our backend api to
-  // fetch data from our data base
   getDataFromDb = () => {
     let that = this;
     axios.get(this.state.apiUrl+'/pages')
       .then((data) => {
-        console.log(data)
         that.setState({ data: data.data.response })
       })
   };
@@ -110,96 +108,166 @@ class App extends Component {
   // see them render into our screen
   render() {
     const { data } = this.state;
-    console.log("data",data)
     return (
-      <div>
-        <div style={{ padding: '10px' }}>
-          <input
-            type="text"
-            onChange={(e) => this.setState({ title: e.target.value })}
-            placeholder="add something in the database"
-            style={{ width: '200px' }}
-          />
-          <button onClick={() => this.putDataToDB(this.state.title)}>
-            ADD
-          </button>
+      <div className={"app"}>
+        <div className={"right-panel"}>
+          <PageSelect data={data} setSelection={this.setSelection} />
+          <PageForm data={data} selectedItem={this.state.selectedItem}  />
         </div>
-        <div style={{ padding: '10px' }}>
-          <input
-            type="text"
-            style={{ width: '200px' }}
-            onChange={(e) => this.setState({ idToDelete: e.target.value })}
-            placeholder="put id of item to delete here"
-          />
-          <button onClick={() => this.deleteFromDB(this.state.idToDelete)}>
-            DELETE
-          </button>
+        <div className={"left-panel"}>
+          <PageTable data={data} setSelection={this.setSelection} selectedItem={this.state.selectedItem} />
         </div>
-        <div style={{ padding: '10px' }}>
-          <input
-            type="text"
-            style={{ width: '200px' }}
-            onChange={(e) => this.setState({ idToUpdate: e.target.value })}
-            placeholder="id of item to update here"
-          />
-          <input
-            type="text"
-            style={{ width: '200px' }}
-            onChange={(e) => this.setState({ updateToApply: e.target.value })}
-            placeholder="put new value of the item here"
-          />
-          <button
-            onClick={() =>
-              this.updateDB(this.state.idToUpdate, this.state.updateToApply)
-            }
-          >
-            UPDATE
-          </button>
-        </div>
-        <button
-            onClick={() =>
-              this.getDataFromDb()
-            }
-          >
-            LOAD DATA
-          </button>
-          <hr />
-          <div>
-            <ul>
-              {
-                data === null
-                ? 'NO DB ENTRIES YET'
-                : data.pages.map((dat) => (
-                    <li style={{ padding: '10px' }} key={"pages-"+dat._id}>
-                      <span style={{ color: 'gray' }}>id:</span>{dat._id}<br />
-                      <span style={{ color: 'gray' }}>title:</span>{dat.title}<br />
-                      <span style={{ color: 'gray' }}>subtitle:</span>{dat.subtitle}<br />
-                      <span style={{ color: 'gray' }}>description:</span>{dat.description}<br />
-                      <span style={{ color: 'gray' }}>keywords:</span>{dat.keywords}<br />
-                      <span style={{ color: 'gray' }}>content:</span>{dat.content}<br />
-                      <span style={{ color: 'gray' }}>likes:</span>{dat.likes}<br />
-                      
-                      {
-                        dat.images.length !== 0
-                        ?
-                          // <span style={{ color: 'gray' }}>No. of Images {dat.images.length} </span>
-                          dat.images.map((image, i) => (
-                            <div key={"image-"+i} >
-                              <hr />
-                              <span key={"image-title-"+i} style={{ color: 'gray' }}>image title {i}: </span> {image.title} <br />
-                              <span key={"image-alt-"+i} style={{ color: 'gray' }}>image alt {i}: </span> {image.alt} <br />
-                              <span key={"image-src-"+i} style={{ color: 'gray' }}>image src {i}: </span> {image.src} <br />
-                            </div>
-                          ))
-                        :
-                          <hr/>
-                      }
-                    </li>
-                  ))
-              }
-            </ul>
-          </div>
       </div>
+      
+
+
+
+
+
+      // <div>
+      //   <div style={{ padding: '10px' }}>
+      //     <input
+      //       type="text"
+      //       onChange={(e) => this.setState({ title: e.target.value })}
+      //       placeholder="add something in the database"
+      //       style={{ width: '200px' }}
+      //     />
+      //     <button onClick={() => this.putDataToDB(this.state.title)}>
+      //       ADD
+      //     </button>
+      //   </div>
+      //   <div style={{ padding: '10px' }}>
+      //     <input
+      //       type="text"
+      //       style={{ width: '200px' }}
+      //       onChange={(e) => this.setState({ idToDelete: e.target.value })}
+      //       placeholder="put id of item to delete here"
+      //     />
+      //     <button onClick={() => this.deleteFromDB(this.state.idToDelete)}>
+      //       DELETE
+      //     </button>
+      //   </div>
+      //   <div style={{ padding: '10px' }}>
+      //     <input
+      //       type="text"
+      //       style={{ width: '200px' }}
+      //       onChange={(e) => this.setState({ idToUpdate: e.target.value })}
+      //       placeholder="id of item to update here"
+      //     />
+      //     <input
+      //       type="text"
+      //       style={{ width: '200px' }}
+      //       onChange={(e) => this.setState({ updateToApply: e.target.value })}
+      //       placeholder="put new value of the item here"
+      //     />
+      //     <button
+      //       onClick={() =>
+      //         this.updateDB(this.state.idToUpdate, this.state.updateToApply)
+      //       }
+      //     >
+      //       UPDATE
+      //     </button>
+      //   </div>
+      //   <button
+      //       onClick={() =>
+      //         this.getDataFromDb()
+      //       }
+      //     >
+      //       LOAD DATA
+      //     </button>
+      //     <hr />
+      //     <div className={""}>
+      //       <ul>
+      //         {
+      //           data === null
+      //           ? 'NO DB ENTRIES YET'
+      //           : data.pages.map((dat) => (
+      //               <li style={{ padding: '10px' }} key={"pages-"+dat._id}>
+      //                 <span style={{ color: 'gray' }}>id:</span>{dat._id}<br />
+      //                 <span style={{ color: 'gray' }}>title:</span>{dat.title}<br />
+      //                 <span style={{ color: 'gray' }}>subtitle:</span>{dat.subtitle}<br />
+      //                 <span style={{ color: 'gray' }}>description:</span>{dat.description}<br />
+      //                 <span style={{ color: 'gray' }}>keywords:</span>{dat.keywords}<br />
+      //                 <span style={{ color: 'gray' }}>content:</span>{dat.content}<br />
+      //                 <span style={{ color: 'gray' }}>likes:</span>{dat.likes}<br />
+                      
+      //                 {
+      //                   dat.images.length !== 0
+      //                   ?
+      //                     // <span style={{ color: 'gray' }}>No. of Images {dat.images.length} </span>
+      //                     dat.images.map((image, i) => (
+      //                       <div key={"image-"+i} >
+      //                         <hr />
+      //                         <span key={"image-title-"+i} style={{ color: 'gray' }}>image title {i}: </span> {image.title} <br />
+      //                         <span key={"image-alt-"+i} style={{ color: 'gray' }}>image alt {i}: </span> {image.alt} <br />
+      //                         <span key={"image-src-"+i} style={{ color: 'gray' }}>image src {i}: </span> {image.src} <br />
+      //                       </div>
+      //                     ))
+      //                   :
+      //                     <hr/>
+      //                 }
+      //               </li>
+      //             ))
+      //         }
+      //       </ul>
+      //     </div>
+
+      //     <div className={"form"}>   
+      //       <Button onClick={() => this.putDataToDB(this.state.title)}>
+      //         Add
+      //       </Button>
+      //       <form name="update" noValidate>
+      //         <div className="row">
+      //           <label>Title</label>
+      //           <input
+      //             type="text"
+      //             onChange={(e) => this.setState({ title: e.target.value })}
+      //             placeholder="enter title"
+      //           />
+      //         </div>
+      //         <div className="row">
+      //           <label>Sub Title</label>
+      //           <input
+      //             type="text"
+      //             onChange={(e) => this.setState({ subtitle: e.target.value })}
+      //             placeholder="enter sub title"
+      //           />  
+      //         </div>
+      //         <div className="row">
+      //           <label>Description</label>
+      //           <textarea rows="4" cols="50" placeholder="enter description" onChange={(e) => this.setState({ subtitle: e.target.value })}></textarea>
+      //         </div>
+      //         <div className="row">
+      //           <label>Keywords</label>
+      //           <input
+      //             type="text"
+      //             onChange={(e) => this.setState({ subtitle: e.target.value })}
+      //             placeholder="enter key words"
+      //           />  
+      //         </div>
+      //         <div className="row">
+      //           <label>Content</label>
+      //           <textarea rows="10" cols="50" placeholder="enter content" onChange={(e) => this.setState({ subtitle: e.target.value })}></textarea>
+      //         </div>
+      //         <div className="row">
+      //           <label>Image 1</label>
+      //           <input
+      //             type="text"
+      //             onChange={(e) => this.setState({ subtitle: e.target.value })}
+      //             placeholder="enter image url"
+      //           />  
+      //         </div>
+      //         <div className="row">
+      //           <label>Image 2</label>
+      //           <input
+      //             type="text"
+      //             onChange={(e) => this.setState({ subtitle: e.target.value })}
+      //             placeholder="enter image url"
+      //           />  
+      //         </div>
+      //       </form>
+      //     </div> 
+      // </div>
     );
   }
 }
