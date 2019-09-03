@@ -15,11 +15,32 @@ html, body {
     width: 30%;
     padding: 10px;
     background-color: #f1f1f1;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    border-left: 1px solid #cccccc; 
+    border-right: 1px solid #cccccc; 
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .app .left-panel {
+    position: fixed;
     width: 70%;
     padding: 10px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    overflow-x: auto;
+    overflow-y: scroll;
+}
+
+.app .action-panel {
+    border-top: 1px solid #cccccc;
+    background-color: #f3f3f3; 
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 30%;
+}
+
+.app .right-panel form {
+    padding-bottom: 60px;
 }

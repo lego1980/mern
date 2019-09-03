@@ -10,24 +10,29 @@ export default class PageForm extends React.Component {
     subtitle :  '',
     keywords : '',
     description :  '',
-    content : ''
+    content : '',
+    likes: 0,
+    images: []
   }  
   
   updateHandler = () => {
-    this.props.updateHandler();
+    let obj = Object.assign(this.state);
+    this.props.updateHandler(obj);
   }
 
   deleteHandler = () => {
-    this.props.deleteHandler();
+    let obj = Object.assign(this.state);
+    this.props.deleteHandler(obj);
   }
 
   addHandler = () => {
-    this.props.addHandler();
+    let obj = Object.assign(this.state);    
+    this.props.addHandler(obj);
   }
 
   resetHandler = () => {
     this.setState({
-      id :  'add',
+      id :  '',
       title :  '',
       subtitle : '',
       keywords : '',
@@ -43,6 +48,8 @@ export default class PageForm extends React.Component {
   }
   
   componentWillReceiveProps(next) {
+    console.log("componentWillReceiveProps",next);
+    //revise code
     if (next.selectedItem === 'add' || next.selectedItem === null) {
       this.resetHandler();
     } else {
@@ -71,37 +78,39 @@ export default class PageForm extends React.Component {
         }        
         <FormGroup>
           <Label for="title">Title</Label>
-          <Input type="text" name="title" id="title" placeholder="with a placeholder" value={this.state.title} onChange={(event) => this.onChangeHandler(event)} />
+          <Input type="text" name="title" id="title" placeholder="enter title" value={this.state.title} onChange={(event) => this.onChangeHandler(event)} />
         </FormGroup>
         <FormGroup>
           <Label for="subtitle">Subtitle</Label>
-          <Input type="text" name="subtitle" id="subtitle" placeholder="with a placeholder" value={this.state.subtitle} onChange={(value) => this.onChangeHandler(value)}/>
+          <Input type="text" name="subtitle" id="subtitle" placeholder="enter subtitle" value={this.state.subtitle} onChange={(value) => this.onChangeHandler(value)}/>
         </FormGroup>
         <FormGroup>
           <Label for="keywords">Keywords</Label>
-          <Input type="text" name="keywords" id="keywords" placeholder="with a placeholder" value={this.state.keywords} onChange={(value) => this.onChangeHandler(value)} />
+          <Input type="text" name="keywords" id="keywords" placeholder="enter keywords" value={this.state.keywords} onChange={(value) => this.onChangeHandler(value)} />
         </FormGroup>
         <FormGroup>
           <Label for="description">Description</Label>
-          <Input type="textarea" name="description" id="description" value={this.state.description} onChange={(value) => this.onChangeHandler(value)} />
+          <Input type="textarea" name="description" id="description" placeholder="enter description" value={this.state.description} onChange={(value) => this.onChangeHandler(value)} />
         </FormGroup>       
         <FormGroup>
           <Label for="content">Content</Label>
-          <Input type="textarea" name="content" id="content" value={this.state.content} onChange={(value) => this.onChangeHandler(value)} />
+          <Input type="textarea" name="content" id="content" placeholder="enter content" value={this.state.content} onChange={(value) => this.onChangeHandler(value)} />
         </FormGroup>  
-        {
-          this.state.id !== '' && this.state.id !== 'add'
-          ?
-            <>
-              <Button>Update</Button>
-              <Button>Delete</Button>
-            </>
-          :
-            <>
-              <Button>Add</Button>  
-              <Button onClick={(e) => this.resetHandler()}>Reset</Button> 
-            </>         
-        }
+        <div className={"action-panel"}>
+          {
+            this.state.id !== '' && this.state.id !== 'add'
+            ?
+              <>
+                <Button onClick={(e) => this.updateHandler()}>Update</Button>
+                <Button onClick={(e) => this.deleteHandler()}>Delete</Button>
+              </>
+            :
+              <>
+                <Button onClick={(e) => this.addHandler()}>Add</Button>  
+                <Button onClick={(e) => this.resetHandler()}>Reset</Button> 
+              </>         
+          }
+        </div>
       </Form>
     );
   }
