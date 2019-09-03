@@ -1,7 +1,35 @@
+.page-table {
+    position: relative;
+}
+
 .selected-row {
     background: #f1f1f1;
 }
 
 .page-table tbody tr:hover {
     cursor: pointer;
+}
+
+.page-table .page-badge {
+    font-size: 1.5rem;
+}
+
+.page-table tr td:nth-child(1) {
+    width: 1%;
+}
+
+.page-table tr td:nth-child(2) {
+    width: 4%;
+}
+
+.page-table tr td:nth-child(3) {
+    width: 20%
+}
+
+.page-table tr td:nth-child(4) {
+    width: 30%
+}
+
+.page-table tr td:nth-child(5) {
+    width: 45%
 }

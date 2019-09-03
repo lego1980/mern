@@ -11,7 +11,12 @@ const PagesSchema = new Schema(
     keywords: String,
     content: String,
     likes: Number,
-    images: Array
+    images: Array,
+    updatedAt: String,
+    udatedBy: String,
+    createdAt: String,
+    createdBy: String
+
   },
   { collection: 'pages' }
 );

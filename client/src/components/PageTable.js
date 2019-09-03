@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'reactstrap';
+import { Table, Badge } from 'reactstrap';
 import './PageTable.css';
 
 export default class PageTable extends React.Component {
@@ -14,32 +14,47 @@ export default class PageTable extends React.Component {
             id = '';
         }
         return (
-            <Table hover className={'page-table'}>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {
-                        this.props.data  !== null
-                        ? 
-                            this.props.data.pages.map((item, i) => (
-                                <tr className={((id === item._id) ? "selected-row" : "")} key={'tr-'+item._id} onClick={()=>this.onClickHandler(item._id)}>
-                                    <th>{item._id}</th>
-                                    <td>{item.title}</td>
-                                    <td>{item.description}</td>
+            <>
+                
+                <Table hover className={'page-table'}>
+                    <thead>
+                    <tr>
+                        <th>    
+                            {
+                                this.props.data !== null
+                                ?
+                                    <Badge className="page-badge" color="primary">{this.props.data.count}</Badge>
+                                :
+                                    null
+                            }
+                        </th>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Content</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            this.props.data !== null
+                            ? 
+                                this.props.data.pages.map((item, i) => (
+                                    <tr className={((id === item._id) ? "selected-row" : "")} key={'tr-'+item._id} onClick={()=>this.onClickHandler(item._id)}>
+                                        <td>#{i+1}</td>
+                                        <td>{item._id}</td>
+                                        <td>{item.title}</td>
+                                        <td>{item.description}</td>
+                                        <td>{item.content}</td>
+                                    </tr>
+                                ))
+                            : 
+                                <tr>
+                                    <th rowSpan={3}>No Data...</th>
                                 </tr>
-                            ))
-                        : 
-                            <tr>
-                                <th rowSpan={3}>No Data...</th>
-                            </tr>
-                    }
-                </tbody>
-            </Table>
+                        }
+                    </tbody>
+                </Table>
+            </>
         );
     }
 }

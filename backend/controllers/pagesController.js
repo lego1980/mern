@@ -20,6 +20,10 @@ exports.pages_get_all = (req, res, next) => {
                     content: result.content,
                     likes: result.likes,
                     images: result.images,
+                    createdBy: result.createdBy,
+                    createAt: result.createAt,
+                    updatedBy: result.updatedBy,
+                    updatedAt: result.updatedAt,
                     actions: [
                         {
                             action: "USER_GET_ALL",
@@ -89,7 +93,7 @@ exports.pages_get_all = (req, res, next) => {
 exports.pages_get_one = (req, res, next) => { 
     const id = req.params.pageId;
     PagesModel.findById(id)
-    .select('_id title subtitle description keywords content likes images')
+    .select('_id title subtitle description keywords content likes images createdBy createdAt updatedAt')
     .exec()
     .then(result => {     
         if (result) {
@@ -102,6 +106,10 @@ exports.pages_get_one = (req, res, next) => {
                 content: result.content,
                 likes: result.likes,
                 images: result.images,
+                createdBy: result.createdBy,
+                createAt: result.createAt,
+                updatedBy: result.updatedBy,
+                updatedAt: result.updatedAt,
                 request: {
                     type: 'GET',
                     url: 'http://localhost:3001/api/1.0/pages/' + result._id
@@ -128,6 +136,10 @@ exports.pages_add_one = (req, res, next) => {
         content: req.body.content,
         likes: 0,
         images: [],
+        createdBy: req.body.createdBy,
+        createAt: req.body.createAt,
+        updatedBy: req.body.updatedBy,
+        updatedAt: req.body.updatedAt,
     });
     Page.save().then(result => {
         console.log(result);
@@ -142,6 +154,10 @@ exports.pages_add_one = (req, res, next) => {
                 content: result.content,
                 likes: result.likes,
                 images: result.images,
+                createdBy: result.createdBy,
+                createAt: result.createAt,
+                updatedBy: result.updatedBy,
+                updatedAt: result.updatedAt,
                 request: {
                     type: 'GET',
                     url: 'http://localhost:3001/api/1.0/pages/' + result._id
@@ -176,7 +192,7 @@ exports.pages_delete_one = (req, res, next) => {
 exports.pages_patch_one = (req, res, next) => { 
     const id = req.params.pageId;
     const updateOps = {};
-    console.log("req",req.body.title);
+    console.log("req",req.body);
     for (const [key, value] of Object.entries(req.body)) {
         updateOps[key] = value;
     }

@@ -5,18 +5,30 @@ import './PageForm.css'
 export default class PageForm extends React.Component {
  
   state = {
-    id :  'add',
+    id :  '',
     title :  '',
     subtitle :  '',
     keywords : '',
     description :  '',
     content : '',
     likes: 0,
-    images: []
+    images: [],
+    createdAt : '',
+    createdBy : '',
+    updatedAt : '',
+    updatedBy : ''
   }  
   
   updateHandler = () => {
     let obj = Object.assign(this.state);
+    
+    // revisit
+    obj.updatedBy = '';
+    obj.updatedAt = new Date().getTime();
+    if (obj.createdAt === '') {
+      obj.createdBy = '';
+      obj.createdAt = new Date().getTime();
+    }
     this.props.updateHandler(obj);
   }
 
@@ -37,7 +49,13 @@ export default class PageForm extends React.Component {
       subtitle : '',
       keywords : '',
       description : '',
-      content : ''
+      content : '',
+      likes : 0,
+      images : [],
+      createdAt : '',
+      createdBy : '',
+      updatedAt : '',
+      updatedBy : ''
     })
   }
 
@@ -47,10 +65,8 @@ export default class PageForm extends React.Component {
     });
   }
   
-  componentWillReceiveProps(next) {
-    console.log("componentWillReceiveProps",next);
-    //revise code
-    if (next.selectedItem === 'add' || next.selectedItem === null) {
+  UNSAFE_componentWillReceiveProps(next) {
+    if (next.selectedItem === '' || next.selectedItem === null) {
       this.resetHandler();
     } else {
       this.setState({
@@ -59,7 +75,15 @@ export default class PageForm extends React.Component {
         subtitle :  next.selectedItem.subtitle,
         keywords : next.selectedItem.keywords,
         description : next.selectedItem.description,
-        content : next.selectedItem.content
+        content : next.selectedItem.content,
+
+        // images: next.selectedItem.images,
+        // likes: next.selectedItem.likes,
+        // createdAt : next.selectedItem.createdAt,
+        // createdBy : next.selectedItem.createdBy,
+        // updatedAt : next.selectedItem.updatedAt,
+        // updatedBy : next.selectedItem.updatedBy
+
       })
     }
   }
@@ -95,10 +119,10 @@ export default class PageForm extends React.Component {
         <FormGroup>
           <Label for="content">Content</Label>
           <Input type="textarea" name="content" id="content" placeholder="enter content" value={this.state.content} onChange={(value) => this.onChangeHandler(value)} />
-        </FormGroup>  
+        </FormGroup>
         <div className={"action-panel"}>
           {
-            this.state.id !== '' && this.state.id !== 'add'
+            this.state.id !== '' && this.state.id !== null
             ?
               <>
                 <Button onClick={(e) => this.updateHandler()}>Update</Button>

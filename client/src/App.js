@@ -13,7 +13,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedItem : 'add', //default      
+      selectedItem : '', //default      
       http: "http://",
       https: "https://",
       apiVersion: "1.0",
@@ -31,11 +31,11 @@ class App extends Component {
       );
       that.setState({ selectedItem : item })  
     } else {
-      that.setState({ selectedItem : 'add' })  
+      that.setState({ selectedItem : '' })  
     }
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setState({ apiUrl: this.state.http +  this.state.api + this.state.apiVersion });
   }
   
@@ -63,16 +63,17 @@ class App extends Component {
     let id = obj.id;
     axios.delete(this.state.apiUrl+'/pages/'+id).then(res => {
       that.getPages();
-      that.setState({ selectedItem : 'add' }) 
+      that.setState({ selectedItem : '' }) 
     });
   };
 
   updatePage = (obj) => {
+    console.log('updatePage',obj);
     let that = this;
     let id = obj.id;
     axios.post(this.state.apiUrl+'/pages/'+id, obj).then(res => {
       that.getPages();
-      that.setState({ selectedItem : 'add' }) 
+      that.setState({ selectedItem : '' }) 
     });   
   };
 
