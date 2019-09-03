@@ -14,7 +14,7 @@ export default class PageTable extends React.Component {
             id = '';
         }
         return (
-            <Table hover>
+            <Table hover className={'page-table'}>
                 <thead>
                 <tr>
                     <th>ID</th>

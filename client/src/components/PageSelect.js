@@ -1,21 +1,28 @@
 import React from 'react';
 import { FormGroup, Label, Input } from 'reactstrap';
+import './PageSelect.css'
 
 export default class PageSelect extends React.Component {
     onChangeHandler = (id) => {
         this.props.setSelection(id);
     }    
     render() {
+        let {id} = '';
+        if (this.props.selectedItem !== null) {
+            id = this.props.selectedItem._id;
+        } else {
+            id = '';
+        }
         return (
-        <FormGroup>
-            <Label for="exampleSelect">Select</Label>
+        <FormGroup className={'page-select'}>
+            <Label for="exampleSelect">Select an item : </Label>
             <Input type="select" name="select" id="exampleSelect" onChange={(event)=>this.onChangeHandler(event.target.value)}>
             <option key={'option-add'} value={"add"}>Add New</option>
             {
                 this.props.data  !== null
                 ? 
                 this.props.data.pages.map((item) => (
-                    <option key={'option-'+item._id} value={item._id}>{item.title}</option>
+                    <option selected={((id === item._id) ? "selected" : null)} key={'option-'+item._id} value={item._id}>{item.title}</option>
                     ))
                 : 
                     null

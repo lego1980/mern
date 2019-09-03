@@ -13,7 +13,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedItem : null,      
+      selectedItem : 'add', //default      
       http: "http://",
       https: "https://",
       apiVersion: "1.0",
@@ -36,15 +36,14 @@ class App extends Component {
   }
 
   setSelection = (id) => {
-    let that = this;
-    console.log('setSelection',id);        
+    let that = this;   
     if (id !== null && id !== 'add') {
       let item = this.state.data.pages.find(
         ({ _id }) => _id === id
       );
       that.setState({ selectedItem : item })  
     } else {
-      that.setState({ selectedItem : null })  
+      that.setState({ selectedItem : 'add' })  
     }
   }
 
@@ -111,7 +110,7 @@ class App extends Component {
     return (
       <div className={"app"}>
         <div className={"right-panel"}>
-          <PageSelect data={data} setSelection={this.setSelection} />
+          <PageSelect data={data} setSelection={this.setSelection} selectedItem={this.state.selectedItem} />
           <PageForm data={data} selectedItem={this.state.selectedItem}  />
         </div>
         <div className={"left-panel"}>
