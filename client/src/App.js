@@ -19,19 +19,7 @@ class App extends Component {
       apiVersion: "1.0",
       api: "localhost:3001/api/",
       apiUrl: null,
-      _id: 0,
-      title: null,
-      subtitle: null,
-      description: null,
-      keywords: null,
-      content: null,
-      likes: 0,
-      images: [],
-      data: null,
-      intervalIsSet: false,
-      idToDelete: null,
-      idToUpdate: null,
-      objectToUpdate: null,
+      data: null
     }
   }
 
@@ -52,21 +40,21 @@ class App extends Component {
   }
   
   componentDidMount() {    
-    this.getDataFromDb();
+    this.getPages();
   }
 
-  getDataFromDb = () => {
+  getPages = () => {
     let that = this;
     axios.get(this.state.apiUrl+'/pages')
-      .then((data) => {
-        that.setState({ data: data.data.response })
+      .then((pages) => {
+        that.setState({ data: pages.data.response })
       })
   };
 
   addPage = (obj) => {    
     let that = this;
     axios.post(this.state.apiUrl+'/pages', obj).then(res => {
-      that.getDataFromDb();
+      that.getPages();
     });   
   };
 
@@ -74,7 +62,7 @@ class App extends Component {
     let that = this;
     let id = obj.id;
     axios.delete(this.state.apiUrl+'/pages/'+id).then(res => {
-      that.getDataFromDb();
+      that.getPages();
       that.setState({ selectedItem : 'add' }) 
     });
   };
@@ -83,7 +71,7 @@ class App extends Component {
     let that = this;
     let id = obj.id;
     axios.post(this.state.apiUrl+'/pages/'+id, obj).then(res => {
-      that.getDataFromDb();
+      that.getPages();
       that.setState({ selectedItem : 'add' }) 
     });   
   };
