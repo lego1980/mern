@@ -25,7 +25,7 @@ class App extends Component {
 
   setSelection = (id) => {
     let that = this;   
-    if (id !== null && id !== 'add') {
+    if (id !== null && id !== '') {
       let item = this.state.data.pages.find(
         ({ _id }) => _id === id
       );
@@ -51,7 +51,8 @@ class App extends Component {
       })
   };
 
-  addPage = (obj) => {    
+  addPage = (obj) => {  
+    console.log("addPage",obj);  
     let that = this;
     axios.post(this.state.apiUrl+'/pages', obj).then(res => {
       that.getPages();

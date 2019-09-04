@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Badge } from 'reactstrap';
+import Moment from 'react-moment';
 import './PageTable.css';
 
 export default class PageTable extends React.Component {
@@ -32,6 +33,8 @@ export default class PageTable extends React.Component {
                         <th>Title</th>
                         <th>Description</th>
                         <th>Content</th>
+                        <th>Created</th>
+                        <th>Updated</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,11 +48,13 @@ export default class PageTable extends React.Component {
                                         <td>{item.title}</td>
                                         <td>{item.description}</td>
                                         <td>{item.content}</td>
+                                        <td><Moment>{item.createdAt}</Moment></td>                                                                  
+                                        <td><Moment>{item.updatedAt}</Moment></td>
                                     </tr>
                                 ))
                             : 
                                 <tr>
-                                    <th rowSpan={3}>No Data...</th>
+                                    <th rowSpan={7}>No Data...</th>
                                 </tr>
                         }
                     </tbody>

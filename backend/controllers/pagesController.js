@@ -5,7 +5,8 @@ const PagesModel = require('../models/pagesModel');
 //get all pages
 exports.pages_get_all = (req, res, next) => { 
     PagesModel.find()
-    .select('_id title subtitle description keywords content likes images')
+    .select('_id title subtitle description keywords content likes images createdBy createdAt updatedBy updatedAt')
+    .sort('updatedAt')
     .exec()
     .then(result => {
         const response = {
@@ -16,12 +17,12 @@ exports.pages_get_all = (req, res, next) => {
                     title: result.title,
                     subtitle: result.subtitle,
                     description: result.description,
-                    keywords : result.keywords,
+                    keywords: result.keywords,
                     content: result.content,
                     likes: result.likes,
                     images: result.images,
                     createdBy: result.createdBy,
-                    createAt: result.createAt,
+                    createdAt: result.createdAt,
                     updatedBy: result.updatedBy,
                     updatedAt: result.updatedAt,
                     actions: [
@@ -107,7 +108,7 @@ exports.pages_get_one = (req, res, next) => {
                 likes: result.likes,
                 images: result.images,
                 createdBy: result.createdBy,
-                createAt: result.createAt,
+                createdAt: result.createdAt,
                 updatedBy: result.updatedBy,
                 updatedAt: result.updatedAt,
                 request: {
@@ -137,7 +138,7 @@ exports.pages_add_one = (req, res, next) => {
         likes: 0,
         images: [],
         createdBy: req.body.createdBy,
-        createAt: req.body.createAt,
+        createdAt: req.body.createdAt,
         updatedBy: req.body.updatedBy,
         updatedAt: req.body.updatedAt,
     });
@@ -155,7 +156,7 @@ exports.pages_add_one = (req, res, next) => {
                 likes: result.likes,
                 images: result.images,
                 createdBy: result.createdBy,
-                createAt: result.createAt,
+                createdAt: result.createdAt,
                 updatedBy: result.updatedBy,
                 updatedAt: result.updatedAt,
                 request: {

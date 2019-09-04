@@ -20,8 +20,7 @@ export default class PageForm extends React.Component {
   }  
   
   updateHandler = () => {
-    let obj = Object.assign(this.state);
-    
+    let obj = Object.assign(this.state);    
     // revisit
     obj.updatedBy = '';
     obj.updatedAt = new Date().getTime();
@@ -37,8 +36,14 @@ export default class PageForm extends React.Component {
     this.props.deleteHandler(obj);
   }
 
-  addHandler = () => {
-    let obj = Object.assign(this.state);    
+  addHandler = () => {    
+    let obj = Object.assign(this.state); 
+    // revisit     
+    obj.createdBy = '';
+    obj.createdAt = new Date().getTime();
+    obj.updatedBy = '';
+    obj.updatedAt = new Date().getTime();  
+    console.log("addHandler",obj);
     this.props.addHandler(obj);
   }
 
@@ -64,7 +69,49 @@ export default class PageForm extends React.Component {
       [event.target.name]: event.target.value
     });
   }
-  
+
+  addImage = () => {
+    this.setState(state => {
+      const images = [...state.images, ""];
+      return {
+        images
+      }
+    }, () => {
+      console.log("addImage",this.state);
+    });    
+  }
+
+  addImageHandler = (event,i) => {
+    console.log('image',event.target.value,i);
+    let val = event.target.value
+    this.setState(state => {
+      const images = state.images.map((image, j) => {        
+        if (j === i) {
+          return image = val
+        } else {
+          return image
+        }
+      });
+      return {
+        images
+      }
+    }, () => {
+      console.log("addImageHandler",this.state);
+    });    
+  }
+
+  removeImageHandler = (event,i) => {
+    console.log("removeImageHandler",i);
+    this.setState(state => {
+      const images = state.images.splice(i,0);
+      return {
+        images
+      }
+    }, () => {
+      console.log("removeImageHandler",this.state);
+    });    
+  }
+    
   UNSAFE_componentWillReceiveProps(next) {
     if (next.selectedItem === '' || next.selectedItem === null) {
       this.resetHandler();
@@ -76,21 +123,19 @@ export default class PageForm extends React.Component {
         keywords : next.selectedItem.keywords,
         description : next.selectedItem.description,
         content : next.selectedItem.content,
-
-        // images: next.selectedItem.images,
-        // likes: next.selectedItem.likes,
-        // createdAt : next.selectedItem.createdAt,
-        // createdBy : next.selectedItem.createdBy,
-        // updatedAt : next.selectedItem.updatedAt,
-        // updatedBy : next.selectedItem.updatedBy
-
+        images: next.selectedItem.images,
+        likes: next.selectedItem.likes,
+        createdAt : next.selectedItem.createdAt,
+        createdBy : next.selectedItem.createdBy,
+        updatedAt : next.selectedItem.updatedAt,
+        updatedBy : next.selectedItem.updatedBy
       })
     }
   }
 
   render() {  
     return (
-      <Form> 
+      <Form className="page-form"> 
         {
           this.state.id !== ''
           ?
@@ -119,6 +164,26 @@ export default class PageForm extends React.Component {
         <FormGroup>
           <Label for="content">Content</Label>
           <Input type="textarea" name="content" id="content" placeholder="enter content" value={this.state.content} onChange={(value) => this.onChangeHandler(value)} />
+        </FormGroup>
+        <FormGroup>
+          <Label for="content">Likes</Label>
+          <Input type="text" name="likes" id="likes" placeholder="enter content" value={this.state.likes} onChange={(value) => this.onChangeHandler(value)} />
+        </FormGroup>
+        <FormGroup>
+          <Label for="content">Images</Label>
+          <Button onClick={(e) => this.addImage(e)}>+</Button>  
+          {
+            this.state.images.length !== 0
+              ?                
+                  this.state.images.map((image,i) => 
+                    <div key={"image-wrapper-"+i}>
+                      <Input key={"image-"+i} type="text" name={"image"} placeholder="enter image url" value={this.state.images[i]} onChange={(value) => this.addImageHandler(value,i)} />
+                      <Button key={"image-remove-"+i} onClick={(e) => this.removeImageHandler(e,i)}>-</Button>
+                    </div>  
+                  )
+              :
+                null
+          }          
         </FormGroup>
         <div className={"action-panel"}>
           {

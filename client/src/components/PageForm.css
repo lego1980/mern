@@ -1,8 +1,12 @@
-.app .form-control, 
-.app .btn {
+.page-form .form-control, 
+.page-form .btn {
     font-size: 1.4rem;
 }
 
-.app .btn {
+.page-form .btn {
     margin: 10px;
+}
+
+.page-form textarea.form-control {
+    height: 200px;
 }

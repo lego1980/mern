@@ -31,5 +31,13 @@
 }
 
 .page-table tr td:nth-child(5) {
-    width: 45%
+    width: 35%
+}
+
+.page-table tr td:nth-child(6) {
+    width: 5%
+}
+
+.page-table tr td:nth-child(7) {
+    width: 5%
 }

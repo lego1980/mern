@@ -17,7 +17,7 @@ export default class PageSelect extends React.Component {
         <FormGroup className={'page-select'}>
             <Label for="exampleSelect">Select an item : </Label>
             <Input type="select" name="select" id="exampleSelect" onChange={(event)=>this.onChangeHandler(event.target.value)}>
-            <option key={'option-add'} value={"add"}>Add New</option>
+            <option key={'option-add'} value={""}>Add New</option>
             {
                 this.props.data  !== null
                 ? 
