@@ -72,7 +72,7 @@ export default class PageForm extends React.Component {
 
   addImage = () => {
     this.setState(state => {
-      const images = [...state.images, ""];
+      const images = [...state.images, {imageUrl:'',imageAlt:'',imageTitle:'',imageDescription:''}];
       return {
         images
       }
@@ -82,14 +82,15 @@ export default class PageForm extends React.Component {
   }
 
   addImageHandler = (event,i) => {
-    console.log('image',event.target.value,i);
-    let val = event.target.value
+    let val = event.target.value;
+    let name = event.target.name;
     this.setState(state => {
       const images = state.images.map((image, j) => {        
         if (j === i) {
-          return image = val
+          image[name] = val;  
+          return image;
         } else {
-          return image
+          return image;
         }
       });
       return {
@@ -103,7 +104,8 @@ export default class PageForm extends React.Component {
   removeImageHandler = (event,i) => {
     console.log("removeImageHandler",i);
     this.setState(state => {
-      const images = state.images.splice(i,0);
+      const slice = state.images.splice(i,1);
+      const images = state.images;
       return {
         images
       }
@@ -124,7 +126,7 @@ export default class PageForm extends React.Component {
         description : next.selectedItem.description,
         content : next.selectedItem.content,
         images: next.selectedItem.images,
-        likes: next.selectedItem.likes,
+        likes : next.selectedItem.likes,
         createdAt : next.selectedItem.createdAt,
         createdBy : next.selectedItem.createdBy,
         updatedAt : next.selectedItem.updatedAt,
@@ -170,32 +172,44 @@ export default class PageForm extends React.Component {
           <Input type="text" name="likes" id="likes" placeholder="enter content" value={this.state.likes} onChange={(value) => this.onChangeHandler(value)} />
         </FormGroup>
         <FormGroup>
-          <Label for="content">Images</Label>
-          <Button onClick={(e) => this.addImage(e)}>+</Button>  
           {
             this.state.images.length !== 0
               ?                
                   this.state.images.map((image,i) => 
-                    <div key={"image-wrapper-"+i}>
-                      <Input key={"image-"+i} type="text" name={"image"} placeholder="enter image url" value={this.state.images[i]} onChange={(value) => this.addImageHandler(value,i)} />
-                      <Button key={"image-remove-"+i} onClick={(e) => this.removeImageHandler(e,i)}>-</Button>
+                    <div className={"image-wrapper"} key={"image-wrapper-"+i}>
+                      <h3>Image {(i+1)}</h3>
+                      <Input key={"image-title"+i} type="text" name={"imageTitle"} placeholder="enter image title" value={this.state.images[i].imageTitle} onChange={(value) => this.addImageHandler(value,i)} />
+                      <Input key={"image-description"+i} type="text" name={"imageDescription"} placeholder="enter image description" value={this.state.images[i].imageDescription} onChange={(value) => this.addImageHandler(value,i)} />
+                      <Input key={"image-alt"+i} type="text" name={"imageAlt"} placeholder="enter image alt" value={this.state.images[i].imageAlt} onChange={(value) => this.addImageHandler(value,i)} />
+                      <Input key={"image-"+i} type="text" name={"imageUrl"} placeholder="enter image url" value={this.state.images[i].imageUrl} onChange={(value) => this.addImageHandler(value,i)} />
+                      {
+                        this.state.images[i].imageUrl && this.state.images[i].imageUrl !== ''
+                        ?
+                          <div className={"image-viewer"}>
+                            <img src={this.state.images[i].imageUrl} />
+                          </div>
+                        :
+                          null
+                      }                      
+                      <Button color="danger" key={"image-remove-"+i} onClick={(e) => this.removeImageHandler(e,i)}>remove</Button>
                     </div>  
                   )
               :
                 null
-          }          
+          }
+          <Button color="primary" className={"add-image-btn"} onClick={(e) => this.addImage(e)}>Add image</Button>           
         </FormGroup>
         <div className={"action-panel"}>
           {
             this.state.id !== '' && this.state.id !== null
             ?
               <>
-                <Button onClick={(e) => this.updateHandler()}>Update</Button>
-                <Button onClick={(e) => this.deleteHandler()}>Delete</Button>
+                <Button color="primary" onClick={(e) => this.updateHandler()}>Update</Button>
+                <Button ocolor="danger" onClick={(e) => this.deleteHandler()}>Delete</Button>
               </>
             :
               <>
-                <Button onClick={(e) => this.addHandler()}>Add</Button>  
+                <Button color="primary" onClick={(e) => this.addHandler()}>Add</Button>  
                 <Button onClick={(e) => this.resetHandler()}>Reset</Button> 
               </>         
           }

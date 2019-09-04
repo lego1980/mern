@@ -6,7 +6,7 @@ const PagesModel = require('../models/pagesModel');
 exports.pages_get_all = (req, res, next) => { 
     PagesModel.find()
     .select('_id title subtitle description keywords content likes images createdBy createdAt updatedBy updatedAt')
-    .sort('updatedAt')
+    .sort('-updatedAt')
     .exec()
     .then(result => {
         const response = {

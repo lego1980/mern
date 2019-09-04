@@ -10,3 +10,46 @@
 .page-form textarea.form-control {
     height: 200px;
 }
+
+.page-form .image-wrapper {
+    width: 100%;
+    margin: 2.0rem 0 1.5rem;
+    padding: 2.5rem 0 1rem;
+    border-top: 1px solid #cccccc;
+}
+
+.page-form .image-wrapper input {
+    width: 100%;
+    display: block;
+    margin: 0.5rem 0 0.5rem;
+}
+
+.page-form .image-wrapper button {
+    margin: 0 0 1rem;
+    display: block;
+    height: 2.8rem;
+    line-height: 1.4rem;
+}
+
+.page-form .image-viewer {
+    margin: 0 0 1rem;
+    width: 100%;
+    height: 200px;
+    display: block;
+    overflow: hidden;
+    background-color: #888888;
+}
+
+.page-form .image-viewer img {
+    width: auto;
+    height: inherit;
+    display: block;
+    margin: 0 auto;
+}
+
+.page-form .add-image-btn {
+    display: block;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
