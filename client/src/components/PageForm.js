@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import './PageForm.css'
 
 export default class PageForm extends React.Component {
@@ -104,7 +104,7 @@ export default class PageForm extends React.Component {
   removeImageHandler = (event,i) => {
     console.log("removeImageHandler",i);
     this.setState(state => {
-      const slice = state.images.splice(i,1);
+      state.images.splice(i,1);
       const images = state.images;
       return {
         images
@@ -186,7 +186,7 @@ export default class PageForm extends React.Component {
                         this.state.images[i].imageUrl && this.state.images[i].imageUrl !== ''
                         ?
                           <div className={"image-viewer"}>
-                            <img src={this.state.images[i].imageUrl} />
+                            <img src={this.state.images[i].imageUrl} alt={this.state.images[i].imageAlt} title={this.state.images[i].imageTitle} />
                           </div>
                         :
                           null

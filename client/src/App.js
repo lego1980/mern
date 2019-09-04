@@ -36,11 +36,10 @@ class App extends Component {
   }
 
   UNSAFE_componentWillMount() {
-    this.setState({ apiUrl: this.state.http +  this.state.api + this.state.apiVersion });
-  }
-  
-  componentDidMount() {    
-    this.getPages();
+    let that = this;
+    this.setState({ apiUrl: this.state.http +  this.state.api + this.state.apiVersion },() => {
+      that.getPages();
+    });
   }
 
   getPages = () => {
