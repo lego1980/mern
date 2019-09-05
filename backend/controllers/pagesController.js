@@ -5,7 +5,7 @@ const PagesModel = require('../models/pagesModel');
 //get all pages
 exports.pages_get_all = (req, res, next) => { 
     PagesModel.find()
-    .select('_id title subtitle description keywords content likes images createdBy createdAt updatedBy updatedAt')
+    .select('_id title subtitle description keywords content likes images active createdBy createdAt updatedBy updatedAt')
     .sort('-updatedAt')
     .exec()
     .then(result => {
@@ -21,6 +21,7 @@ exports.pages_get_all = (req, res, next) => {
                     content: result.content,
                     likes: result.likes,
                     images: result.images,
+                    active: result.active,
                     createdBy: result.createdBy,
                     createdAt: result.createdAt,
                     updatedBy: result.updatedBy,
@@ -53,7 +54,13 @@ exports.pages_get_all = (req, res, next) => {
                                     description: result.description,
                                     keywords : result.keywords,
                                     content: result.content,
-                                    likes: result.likes
+                                    likes: result.likes,
+                                    images: result.images,
+                                    active: result.active,
+                                    createdBy: result.createdBy,
+                                    createdAt: result.createdAt,
+                                    updatedBy: result.updatedBy,
+                                    updatedAt: result.updatedAt
                                 }
                             }
                         },
@@ -107,6 +114,7 @@ exports.pages_get_one = (req, res, next) => {
                 content: result.content,
                 likes: result.likes,
                 images: result.images,
+                active: result.active,
                 createdBy: result.createdBy,
                 createdAt: result.createdAt,
                 updatedBy: result.updatedBy,
@@ -137,6 +145,7 @@ exports.pages_add_one = (req, res, next) => {
         content: req.body.content,
         likes: 0,
         images: [],
+        active: req.body.active,
         createdBy: req.body.createdBy,
         createdAt: req.body.createdAt,
         updatedBy: req.body.updatedBy,
@@ -155,6 +164,7 @@ exports.pages_add_one = (req, res, next) => {
                 content: result.content,
                 likes: result.likes,
                 images: result.images,
+                active: result.active,
                 createdBy: result.createdBy,
                 createdAt: result.createdAt,
                 updatedBy: result.updatedBy,

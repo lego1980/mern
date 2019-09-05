@@ -53,3 +53,6 @@
     margin-left: 0;
     margin-right: 0;
 }
+.modal-dialog, .modal-title, .modal button {
+    font-size: 1.4rem;
+}

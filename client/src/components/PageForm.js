@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter  } from 'reactstrap';
 import './PageForm.css'
 
 export default class PageForm extends React.Component {
@@ -16,9 +16,17 @@ export default class PageForm extends React.Component {
     createdAt : '',
     createdBy : '',
     updatedAt : '',
-    updatedBy : ''
+    updatedBy : '',
+    modalDelete: false,
+    modalUpdate: false
   }  
   
+  toggleModalUpdate = () => {
+    this.setState(prevState => ({
+      modalUpdate: !prevState.modalUpdate
+    }));
+  }
+
   updateHandler = () => {
     let obj = Object.assign(this.state);    
     // revisit
@@ -29,11 +37,19 @@ export default class PageForm extends React.Component {
       obj.createdAt = new Date().getTime();
     }
     this.props.updateHandler(obj);
+    this.toggleModalUpdate();
   }
 
+  toggleModalDelete = () => {
+    this.setState(prevState => ({
+      modalDelete: !prevState.modalDelete
+    }));
+  }
+  
   deleteHandler = () => {
     let obj = Object.assign(this.state);
     this.props.deleteHandler(obj);
+    this.toggleModalDelete();
   }
 
   addHandler = () => {    
@@ -57,6 +73,7 @@ export default class PageForm extends React.Component {
       content : '',
       likes : 0,
       images : [],
+      active : false,
       createdAt : '',
       createdBy : '',
       updatedAt : '',
@@ -127,6 +144,7 @@ export default class PageForm extends React.Component {
         content : next.selectedItem.content,
         images: next.selectedItem.images,
         likes : next.selectedItem.likes,
+        active: next.selectedItem.active,
         createdAt : next.selectedItem.createdAt,
         createdBy : next.selectedItem.createdBy,
         updatedAt : next.selectedItem.updatedAt,
@@ -137,84 +155,113 @@ export default class PageForm extends React.Component {
 
   render() {  
     return (
-      <Form className="page-form"> 
-        {
-          this.state.id !== ''
-          ?
-            <FormGroup>
-              <Input type="text" name="title" id="title" readOnly value={this.state.id} />
-            </FormGroup>
-          :
-            null
-        }        
-        <FormGroup>
-          <Label for="title">Title</Label>
-          <Input type="text" name="title" id="title" placeholder="enter title" value={this.state.title} onChange={(event) => this.onChangeHandler(event)} />
-        </FormGroup>
-        <FormGroup>
-          <Label for="subtitle">Subtitle</Label>
-          <Input type="text" name="subtitle" id="subtitle" placeholder="enter subtitle" value={this.state.subtitle} onChange={(value) => this.onChangeHandler(value)}/>
-        </FormGroup>
-        <FormGroup>
-          <Label for="keywords">Keywords</Label>
-          <Input type="text" name="keywords" id="keywords" placeholder="enter keywords" value={this.state.keywords} onChange={(value) => this.onChangeHandler(value)} />
-        </FormGroup>
-        <FormGroup>
-          <Label for="description">Description</Label>
-          <Input type="textarea" name="description" id="description" placeholder="enter description" value={this.state.description} onChange={(value) => this.onChangeHandler(value)} />
-        </FormGroup>       
-        <FormGroup>
-          <Label for="content">Content</Label>
-          <Input type="textarea" name="content" id="content" placeholder="enter content" value={this.state.content} onChange={(value) => this.onChangeHandler(value)} />
-        </FormGroup>
-        <FormGroup>
-          <Label for="content">Likes</Label>
-          <Input type="text" name="likes" id="likes" placeholder="enter content" value={this.state.likes} onChange={(value) => this.onChangeHandler(value)} />
-        </FormGroup>
-        <FormGroup>
+      <>
+        <Form className="page-form"> 
           {
-            this.state.images.length !== 0
-              ?                
-                  this.state.images.map((image,i) => 
-                    <div className={"image-wrapper"} key={"image-wrapper-"+i}>
-                      <h3>Image {(i+1)}</h3>
-                      <Input key={"image-title"+i} type="text" name={"imageTitle"} placeholder="enter image title" value={this.state.images[i].imageTitle} onChange={(value) => this.addImageHandler(value,i)} />
-                      <Input key={"image-description"+i} type="text" name={"imageDescription"} placeholder="enter image description" value={this.state.images[i].imageDescription} onChange={(value) => this.addImageHandler(value,i)} />
-                      <Input key={"image-alt"+i} type="text" name={"imageAlt"} placeholder="enter image alt" value={this.state.images[i].imageAlt} onChange={(value) => this.addImageHandler(value,i)} />
-                      <Input key={"image-"+i} type="text" name={"imageUrl"} placeholder="enter image url" value={this.state.images[i].imageUrl} onChange={(value) => this.addImageHandler(value,i)} />
-                      {
-                        this.state.images[i].imageUrl && this.state.images[i].imageUrl !== ''
-                        ?
-                          <div className={"image-viewer"}>
-                            <img src={this.state.images[i].imageUrl} alt={this.state.images[i].imageAlt} title={this.state.images[i].imageTitle} />
-                          </div>
-                        :
-                          null
-                      }                      
-                      <Button color="danger" key={"image-remove-"+i} onClick={(e) => this.removeImageHandler(e,i)}>remove</Button>
-                    </div>  
-                  )
-              :
-                null
-          }
-          <Button color="primary" className={"add-image-btn"} onClick={(e) => this.addImage(e)}>Add image</Button>           
-        </FormGroup>
-        <div className={"action-panel"}>
-          {
-            this.state.id !== '' && this.state.id !== null
+            this.state.id !== ''
             ?
-              <>
-                <Button color="primary" onClick={(e) => this.updateHandler()}>Update</Button>
-                <Button ocolor="danger" onClick={(e) => this.deleteHandler()}>Delete</Button>
-              </>
+              <FormGroup>
+                <Input type="text" name="title" id="title" readOnly value={this.state.id} />
+              </FormGroup>
             :
-              <>
-                <Button color="primary" onClick={(e) => this.addHandler()}>Add</Button>  
-                <Button onClick={(e) => this.resetHandler()}>Reset</Button> 
-              </>         
-          }
-        </div>
-      </Form>
+              null
+          } 
+          <FormGroup className={'page-select'}>
+            <Label for="active">Active?</Label>
+            <Input type="select" name="active" id="active" onChange={(event)=>this.onChangeHandler(event)}>
+              <option key={'option-active-false'}  selected={((this.state.active === false) ? "selected" : null)} value={false}>False</option>
+              <option key={'option-active-true'} selected={((this.state.active === true) ? "selected" : null)} value={true}>True</option>
+            </Input>
+          </FormGroup>    
+          <FormGroup>
+            <Label for="title">Title</Label>
+            <Input type="text" name="title" id="title" placeholder="enter title" value={this.state.title} onChange={(event) => this.onChangeHandler(event)} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="subtitle">Subtitle</Label>
+            <Input type="text" name="subtitle" id="subtitle" placeholder="enter subtitle" value={this.state.subtitle} onChange={(value) => this.onChangeHandler(value)}/>
+          </FormGroup>
+          <FormGroup>
+            <Label for="keywords">Keywords</Label>
+            <Input type="text" name="keywords" id="keywords" placeholder="enter keywords" value={this.state.keywords} onChange={(value) => this.onChangeHandler(value)} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="description">Description</Label>
+            <Input type="textarea" name="description" id="description" placeholder="enter description" value={this.state.description} onChange={(value) => this.onChangeHandler(value)} />
+          </FormGroup>       
+          <FormGroup>
+            <Label for="content">Content</Label>
+            <Input type="textarea" name="content" id="content" placeholder="enter content" value={this.state.content} onChange={(value) => this.onChangeHandler(value)} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="content">Likes</Label>
+            <Input type="text" name="likes" id="likes" placeholder="enter content" value={this.state.likes} onChange={(value) => this.onChangeHandler(value)} />
+          </FormGroup>
+          <FormGroup>
+            {
+              this.state.images.length !== 0
+                ?                
+                    this.state.images.map((image,i) => 
+                      <div className={"image-wrapper"} key={"image-wrapper-"+i}>
+                        <h3>Image {(i+1)}</h3>
+                        <Input key={"image-title"+i} type="text" name={"imageTitle"} placeholder="enter image title" value={this.state.images[i].imageTitle} onChange={(value) => this.addImageHandler(value,i)} />
+                        <Input key={"image-description"+i} type="text" name={"imageDescription"} placeholder="enter image description" value={this.state.images[i].imageDescription} onChange={(value) => this.addImageHandler(value,i)} />
+                        <Input key={"image-alt"+i} type="text" name={"imageAlt"} placeholder="enter image alt" value={this.state.images[i].imageAlt} onChange={(value) => this.addImageHandler(value,i)} />
+                        <Input key={"image-"+i} type="text" name={"imageUrl"} placeholder="enter image url" value={this.state.images[i].imageUrl} onChange={(value) => this.addImageHandler(value,i)} />
+                        {
+                          this.state.images[i].imageUrl && this.state.images[i].imageUrl !== ''
+                          ?
+                            <div className={"image-viewer"}>
+                              <img src={this.state.images[i].imageUrl} alt={this.state.images[i].imageAlt} title={this.state.images[i].imageTitle} />
+                            </div>
+                          :
+                            null
+                        }                      
+                        <Button color="danger" key={"image-remove-"+i} onClick={(e) => this.removeImageHandler(e,i)}>remove</Button>
+                      </div>  
+                    )
+                :
+                  null
+            }
+            <Button color="primary" className={"add-image-btn"} onClick={(e) => this.addImage(e)}>Add image</Button>           
+          </FormGroup>
+          <div className={"action-panel"}>
+            {
+              this.state.id !== '' && this.state.id !== null
+              ?
+                <>
+                  <Button color="primary" onClick={(e) => this.toggleModalUpdate()}>Update</Button>
+                  <Button color="danger" onClick={(e) => this.toggleModalDelete()}>Delete</Button>
+                </>
+              :
+                <>
+                  <Button color="primary" onClick={(e) => this.addHandler()}>Add</Button>  
+                  <Button onClick={(e) => this.resetHandler()}>Reset</Button> 
+                </>         
+            }
+          </div>
+        </Form>
+        <Modal isOpen={this.state.modalUpdate} className={this.props.className}>
+          <ModalHeader toggle={this.toggle}>Update page "{this.state.title}"?</ModalHeader>
+          <ModalBody>
+            Are you sure?
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={() => this.updateHandler()}>Update</Button>{' '}
+            <Button color="secondary" onClick={() => this.toggleModalUpdate()}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+        <Modal isOpen={this.state.modalDelete} className={this.props.className}>
+          <ModalHeader toggle={this.toggle}>Delete page "{this.state.title}"?</ModalHeader>
+          <ModalBody>
+            Are you sure?
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={() => this.deleteHandler()}>Delete</Button>{' '}
+            <Button color="secondary" onClick={() => this.toggleModalDelete()}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+      </>
     );
   }
 }

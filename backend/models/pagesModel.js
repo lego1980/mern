@@ -12,6 +12,7 @@ const PagesSchema = new Schema(
     content: String,
     likes: Number,
     images: Array,
+    active: Boolean,
     updatedAt: Date,
     updatedBy: String,
     createdAt: Date,
