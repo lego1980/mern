@@ -7,11 +7,24 @@ html, body {
     font-size: 1.4rem;
 }
 
+
+.app .left-panel {
+    position: fixed;
+    width: 100%;
+    padding: 10px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    overflow-x: auto;
+    overflow-y: scroll;
+    z-index: 100;
+}
+
 .app .right-panel {
     position: fixed;
     top: 0;
     bottom: 0;
-    right: 0;
+    right: -100%;
     width: 30%;
     padding: 10px;
     background-color: #f1f1f1;
@@ -19,27 +32,14 @@ html, body {
     border-right: 1px solid #cccccc; 
     overflow-x: hidden;
     overflow-y: scroll;
+    z-index: 200;
+    box-shadow: -1px 0px 10px 0px #cccccc;
+    transition: right 300ms ease-in;
 }
 
-.app .left-panel {
-    position: fixed;
-    width: 70%;
-    padding: 10px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    overflow-x: auto;
-    overflow-y: scroll;
-}
-
-.app .action-panel {
-    border-top: 1px solid #cccccc;
-    background-color: #f3f3f3; 
-    position: fixed;
-    bottom: 0;
+.app .right-panel.show {
     right: 0;
-    width: 30%;
-}
+}    
 
 .app .right-panel form {
     padding-bottom: 60px;

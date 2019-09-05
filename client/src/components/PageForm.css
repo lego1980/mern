@@ -5,6 +5,7 @@
 
 .page-form .btn {
     margin: 10px;
+    min-width: 100px;
 }
 
 .page-form textarea.form-control {
@@ -53,6 +54,24 @@
     margin-left: 0;
     margin-right: 0;
 }
+
+.page-form .close-btn {
+    display: inline-block;
+    position: relative;
+    right: -11%;
+}
+
+.page-form .action-panel {
+    border-top: 1px solid #cccccc;
+    background-color: #f3f3f3;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-left: -10px;
+    z-index: 200;
+    box-shadow: -2px -1px 4px #cccccc;
+}
+
 .modal-dialog, .modal-title, .modal button {
     font-size: 1.4rem;
 }

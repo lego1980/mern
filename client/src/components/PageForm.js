@@ -18,9 +18,30 @@ export default class PageForm extends React.Component {
     updatedAt : '',
     updatedBy : '',
     modalDelete: false,
-    modalUpdate: false
+    modalUpdate: false,
+    modalFormUpdate: false,
+    formUpdate: false
   }  
   
+  toggleModalFormUpdate = () => {
+    this.setState(prevState => ({
+      modalFormUpdate: !prevState.modalFormUpdate
+    }));
+  }
+
+  closeFormHandler = (bool) => {
+    console.log("bool",bool);
+    console.log("this.state.formUpdate",this.state.formUpdate);
+    if (this.state.formUpdate && !bool) {
+      this.toggleModalFormUpdate();
+    } else {
+      if (this.state.modalFormUpdate) {
+        this.toggleModalFormUpdate();
+      }
+      this.props.showFormHandler(false);
+    }    
+  }
+
   toggleModalUpdate = () => {
     this.setState(prevState => ({
       modalUpdate: !prevState.modalUpdate
@@ -77,14 +98,19 @@ export default class PageForm extends React.Component {
       createdAt : '',
       createdBy : '',
       updatedAt : '',
-      updatedBy : ''
+      updatedBy : '',
+      modalDelete: false,
+      modalUpdate: false,
+      modalFormUpdate: false,
+      formUpdate: false
     })
   }
 
   onChangeHandler = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
-    });
+      [event.target.name]: event.target.value,
+      formUpdate: true
+    });    
   }
 
   addImage = () => {
@@ -148,7 +174,11 @@ export default class PageForm extends React.Component {
         createdAt : next.selectedItem.createdAt,
         createdBy : next.selectedItem.createdBy,
         updatedAt : next.selectedItem.updatedAt,
-        updatedBy : next.selectedItem.updatedBy
+        updatedBy : next.selectedItem.updatedBy,        
+        modalDelete: false,
+        modalUpdate: false,
+        modalFormUpdate: false,
+        formUpdate: false
       })
     }
   }
@@ -238,7 +268,8 @@ export default class PageForm extends React.Component {
                   <Button color="primary" onClick={(e) => this.addHandler()}>Add</Button>  
                   <Button onClick={(e) => this.resetHandler()}>Reset</Button> 
                 </>         
-            }
+            }            
+            <Button className={"close-btn"} onClick={(e) => this.closeFormHandler(false)}>&rarr;</Button>
           </div>
         </Form>
         <Modal isOpen={this.state.modalUpdate} className={this.props.className}>
@@ -247,7 +278,7 @@ export default class PageForm extends React.Component {
             Are you sure?
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={() => this.updateHandler()}>Update</Button>{' '}
+            <Button color="primary" onClick={() => this.updateHandler()}>Save</Button>
             <Button color="secondary" onClick={() => this.toggleModalUpdate()}>Cancel</Button>
           </ModalFooter>
         </Modal>
@@ -257,8 +288,18 @@ export default class PageForm extends React.Component {
             Are you sure?
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={() => this.deleteHandler()}>Delete</Button>{' '}
+            <Button color="primary" onClick={() => this.deleteHandler()}>Delete</Button>
             <Button color="secondary" onClick={() => this.toggleModalDelete()}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+        <Modal isOpen={this.state.modalFormUpdate} className={this.props.className}>
+          <ModalHeader toggle={this.toggle}>Close Form</ModalHeader>
+          <ModalBody>
+            There are pending changes, do you still wish to close the form?
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={() => this.closeFormHandler(true)}>Close Form</Button>
+            <Button color="secondary" onClick={() => this.toggleModalFormUpdate()}>Cancel</Button>
           </ModalFooter>
         </Modal>
       </>

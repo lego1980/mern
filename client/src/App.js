@@ -19,8 +19,15 @@ class App extends Component {
       apiVersion: "1.0",
       api: "localhost:3001/api/",
       apiUrl: null,
-      data: null
+      data: null,
+      showForm: false
     }
+  }
+
+  toggleShowForm = (bool) => {
+    this.setState({
+      showForm: bool
+    });
   }
 
   setSelection = (id) => {
@@ -29,7 +36,8 @@ class App extends Component {
       let item = this.state.data.pages.find(
         ({ _id }) => _id === id
       );
-      that.setState({ selectedItem : item })  
+      that.setState({ selectedItem : item })
+      that.toggleShowForm(true);  
     } else {
       that.setState({ selectedItem : '' })  
     }
@@ -81,9 +89,9 @@ class App extends Component {
     const { data } = this.state;
     return (
       <div className={"app"}>
-        <div className={"right-panel"}>
+        <div className={"right-panel" + (this.state.showForm ? " show" : "")}>
           <PageSelect data={data} setSelection={this.setSelection} selectedItem={this.state.selectedItem} />
-          <PageForm data={data} selectedItem={this.state.selectedItem} addHandler={this.addPage} deleteHandler={this.deletePage} updateHandler={this.updatePage} />
+          <PageForm data={data} selectedItem={this.state.selectedItem} addHandler={this.addPage} deleteHandler={this.deletePage} updateHandler={this.updatePage} showFormHandler={this.toggleShowForm} />
         </div>
         <div className={"left-panel"}>
           <PageTable data={data} setSelection={this.setSelection} selectedItem={this.state.selectedItem} />
