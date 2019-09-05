@@ -269,7 +269,7 @@ export default class PageForm extends React.Component {
                   <Button onClick={(e) => this.resetHandler()}>Reset</Button> 
                 </>         
             }            
-            <Button className={"close-btn"} onClick={(e) => this.closeFormHandler(false)}>&rarr;</Button>
+            <Button className={"close-btn"} onClick={(e) => this.closeFormHandler(false)}>Close &rarr;</Button>
           </div>
         </Form>
         <Modal isOpen={this.state.modalUpdate} className={this.props.className}>

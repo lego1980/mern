@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"cd backend && node server.js\" \"cd client && npm start\""
+    "mac:start": "concurrently \"cd backend && node server.js\" \"cd client && npm run mac:start\"",
+    "win:start": "concurrently \"cd backend && node server.js\" \"cd client && npm run win:start\""
   },
   "keywords": [],
   "author": "",
