@@ -18,15 +18,7 @@ export default class PageTable extends React.Component {
             <Table hover className={'page-table'}>
                 <thead>
                 <tr>
-                    <th>    
-                        {
-                            this.props.data !== null
-                            ?
-                                <Badge className="page-badge" color="primary">{this.props.data.count}</Badge>
-                            :
-                                null
-                        }
-                    </th>
+                    <th>#</th>
                     <th>ID</th>
                     <th>Title</th>
                     <th>Description</th>
@@ -42,7 +34,7 @@ export default class PageTable extends React.Component {
                         ? 
                             this.props.data.pages.map((item, i) => (
                                 <tr className={((id === item._id) ? "selected-row" : "")} key={'tr-'+item._id} onClick={()=>this.onClickHandler(item._id)}>
-                                    <td>#{i+1}</td>
+                                    <td>{i+1}</td>
                                     <td>{item._id}</td>
                                     <td>{item.title}</td>
                                     <td>{item.description}</td>

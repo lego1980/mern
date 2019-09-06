@@ -4,6 +4,7 @@ import axios from 'axios';
 import './App.css'
 
 // components
+import PageNav from './components/PageNav'
 import PageSelect from './components/PageSelect';
 import PageForm from './components/PageForm';
 import PageTable from './components/PageTable';
@@ -89,6 +90,7 @@ class App extends Component {
     const { data } = this.state;
     return (
       <div className={"app"}>
+        <PageNav data={data} toggleShowForm={this.toggleShowForm} setSelection={this.setSelection} />
         <div className={"right-panel" + (this.state.showForm ? " show" : "")}>
           <PageSelect data={data} setSelection={this.setSelection} selectedItem={this.state.selectedItem} />
           <PageForm data={data} selectedItem={this.state.selectedItem} addHandler={this.addPage} deleteHandler={this.deletePage} updateHandler={this.updatePage} showFormHandler={this.toggleShowForm} />

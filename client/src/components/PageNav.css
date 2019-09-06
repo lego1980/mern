@@ -1,0 +1,31 @@
+.page-nav {
+    font-size: 1.4rem;
+    position: relative;
+    top: 0;
+    z-index: 150;
+    width: 100%;
+    display: block;
+    background: #e8e8e8;
+    min-height: 5.0rem;
+    border: 1px solid #cccccc;
+    box-shadow: 2px 1px 4px #cccccc;
+}
+
+.page-nav a, .page-nav button {
+    font-size: 1.4rem;
+}
+
+.page-nav .navbar {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+}
+
+.page-nav .page-badge {
+    font-size: 1.5rem;
+    display: inline-block;
+    margin: 0 1.0rem;
+}
