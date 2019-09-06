@@ -28,16 +28,16 @@ export default class PageNav extends React.Component {
       <div className={"page-nav"}>
         <Navbar color="faded" light>
             <NavbarBrand>
-                Pages 
+                CMS  
                 {
-                    this.props.data !== null
+                  this.props.data !== null
                     ?
-                        <Badge className="page-badge" color="primary">{this.props.data.count}</Badge>
+                      <Badge className="page-badge" color="primary">{this.props.data.count} Page(s)</Badge>
                     :
-                        null
+                      <Badge className="page-badge" color="primary">0 Page</Badge>
                 }
             </NavbarBrand>
-            <Button className={"close-btn"} onClick={(e) => this.openFormHandler(true)}>Add Page &larr;</Button>
+            <Button className={"close-btn"} onClick={(e) => this.openFormHandler(true)}>&larr; Add Page</Button>
           {/* <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse isOpen={!this.state.collapsed} navbar>
             <Nav navbar>
