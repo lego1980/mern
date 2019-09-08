@@ -5,7 +5,7 @@ const PagesModel = require('../models/pagesModel');
 //get all pages
 exports.pages_get_all = (req, res, next) => { 
     PagesModel.find()
-    .select('_id title subtitle description keywords content likes images active createdBy createdAt updatedBy updatedAt')
+    .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
     .sort('-updatedAt')
     .exec()
     .then(result => {
@@ -22,72 +22,14 @@ exports.pages_get_all = (req, res, next) => {
                     likes: result.likes,
                     images: result.images,
                     active: result.active,
+                    category: result.category,
+                    subCategory: result.subCategory,
+                    tags: result.tags,
+                    url: result.url,
                     createdBy: result.createdBy,
                     createdAt: result.createdAt,
                     updatedBy: result.updatedBy,
-                    updatedAt: result.updatedAt,
-                    actions: [
-                        {
-                            action: "USER_GET_ALL",
-                            request: {
-                                type: 'GET',
-                                url: 'http://localhost:3001/api/1.0/pages/'
-                            }
-                            
-                        },
-                        {
-                            action: "USER_GET_BY_ID",
-                            request: {
-                                type: 'GET',
-                                url: 'http://localhost:3001/api/1.0/pages/' + result._id
-                            }
-                        },
-                        {
-                            action: "USER_POST",
-                            request: {
-                                type: 'POST',
-                                url: 'http://localhost:3001/api/1.0/pages/',
-                                formdata: {
-                                    _id: result._id,
-                                    title: result.title,
-                                    subtitle: result.subtitle,
-                                    description: result.description,
-                                    keywords : result.keywords,
-                                    content: result.content,
-                                    likes: result.likes,
-                                    images: result.images,
-                                    active: result.active,
-                                    createdBy: result.createdBy,
-                                    createdAt: result.createdAt,
-                                    updatedBy: result.updatedBy,
-                                    updatedAt: result.updatedAt
-                                }
-                            }
-                        },
-                        {
-                            action: "USER_DELETE",
-                            request: {
-                                type: 'DELETE',
-                                url: 'http://localhost:3001/api/1.0/pages/' + result._id
-                            }
-                        },
-                        {
-                            action: "USER_PATCH",
-                            request: {
-                                type: 'PATCH',
-                                url: 'http://localhost:3001/api/1.0/pages/' + result._id,
-                                body: [
-                                    { "propName" : "title", "value" : "" },
-                                    { "propName" : "subtitle", "value" : "" },
-                                    { "propName" : "description", "value" : "" },
-                                    { "propName" : "email", "value" : "" },
-                                    { "propName" : "keywords", "value" : "" },
-                                    { "propName" : "content", "value" : "" },
-                                    { "propName" : "likes", "value" : "" }
-                                ]
-                            }                            
-                        }
-                    ]
+                    updatedAt: result.updatedAt                    
                 }
             })
         };
@@ -101,7 +43,7 @@ exports.pages_get_all = (req, res, next) => {
 exports.pages_get_one = (req, res, next) => { 
     const id = req.params.pageId;
     PagesModel.findById(id)
-    .select('_id title subtitle description keywords content likes images createdBy createdAt updatedAt')
+    .select('_id title subtitle description keywords content likes images category subCategory tags createdBy createdAt updatedAt')
     .exec()
     .then(result => {     
         if (result) {
@@ -115,14 +57,14 @@ exports.pages_get_one = (req, res, next) => {
                 likes: result.likes,
                 images: result.images,
                 active: result.active,
+                category: result.category,
+                subCategory: result.subCategory,
+                tags: result.tags,
+                url: result.url,
                 createdBy: result.createdBy,
                 createdAt: result.createdAt,
                 updatedBy: result.updatedBy,
-                updatedAt: result.updatedAt,
-                request: {
-                    type: 'GET',
-                    url: 'http://localhost:3001/api/1.0/pages/' + result._id
-                }
+                updatedAt: result.updatedAt
             };
             res.status(200).json({response});
         } else {
@@ -146,6 +88,10 @@ exports.pages_add_one = (req, res, next) => {
         likes: 0,
         images: [],
         active: req.body.active,
+        category: req.body.category,
+        subCategory: req.body.subCategory,
+        tags: req.body.tags,
+        url: req.body.url,
         createdBy: req.body.createdBy,
         createdAt: req.body.createdAt,
         updatedBy: req.body.updatedBy,
@@ -165,14 +111,14 @@ exports.pages_add_one = (req, res, next) => {
                 likes: result.likes,
                 images: result.images,
                 active: result.active,
+                category: result.category,
+                subCategory: result.subCategory,
+                tags: result.tags,
+                url: result.url,
                 createdBy: result.createdBy,
                 createdAt: result.createdAt,
                 updatedBy: result.updatedBy,
-                updatedAt: result.updatedAt,
-                request: {
-                    type: 'GET',
-                    url: 'http://localhost:3001/api/1.0/pages/' + result._id
-                }
+                updatedAt: result.updatedAt
             }
         });
     }).catch(err => {
@@ -187,11 +133,7 @@ exports.pages_delete_one = (req, res, next) => {
     PagesModel.deleteOne({_id:id}).exec(        
     ).then(result => {
         res.status(200).json({
-            message: 'Page deleted',
-            request: {
-                type: 'GET',
-                url: 'http://localhost:3001/api/1.0/pages/'
-            }
+            message: 'Page deleted'
         })
     }).catch(err => {
         console.log(err);
@@ -214,11 +156,7 @@ exports.pages_patch_one = (req, res, next) => {
     .exec()
     .then(result => {
         res.status(200).json({
-            message: 'Page updated',
-            request: {
-                type: 'GET',
-                url: 'http://localhost:3000/api/1.0/pages/' + id
-            }
+            message: 'Page updated'
         })        
     })
     .catch(err => {

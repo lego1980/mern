@@ -13,6 +13,11 @@ export default class PageForm extends React.Component {
     content : '',
     likes: 0,
     images: [],
+    active: false,
+    category: '',
+    subCategory: '',
+    tags: '',
+    url: '',
     createdAt : '',
     createdBy : '',
     updatedAt : '',
@@ -93,8 +98,12 @@ export default class PageForm extends React.Component {
       description : '',
       content : '',
       likes : 0,
-      images : [],
+      images : [],      
       active : false,
+      category: '',
+      subCategory: '',
+      tags: '',
+      url: '',
       createdAt : '',
       createdBy : '',
       updatedAt : '',
@@ -171,6 +180,10 @@ export default class PageForm extends React.Component {
         images: next.selectedItem.images,
         likes : next.selectedItem.likes,
         active: next.selectedItem.active,
+        category: next.selectedItem.category || '',
+        subCategory: next.selectedItem.subCategory || '',
+        tags: next.selectedItem.tags || '',
+        url: next.selectedItem.url || '',
         createdAt : next.selectedItem.createdAt,
         createdBy : next.selectedItem.createdBy,
         updatedAt : next.selectedItem.updatedAt,
@@ -198,34 +211,50 @@ export default class PageForm extends React.Component {
           } 
           <FormGroup className={'page-select'}>
             <Label for="active">Active?</Label>
-            <Input type="select" name="active" id="active" onChange={(event)=>this.onChangeHandler(event)}>
-              <option key={'option-active-false'}  selected={((this.state.active === false) ? "selected" : null)} value={false}>False</option>
-              <option key={'option-active-true'} selected={((this.state.active === true) ? "selected" : null)} value={true}>True</option>
+            <Input type="select" name="active" id="active" value={this.state.active } onChange={(event)=>this.onChangeHandler(event)}>
+              <option key={'option-active-false'} value={false}>False</option>
+              <option key={'option-active-true'} value={true}>True</option>
             </Input>
+          </FormGroup>
+          <FormGroup>
+            <Label for="url">URL</Label>
+            <Input type="text" name="url" id="url" placeholder="enter a url" value={this.state.url} onChange={(event) => this.onChangeHandler(event)} />
           </FormGroup>    
           <FormGroup>
             <Label for="title">Title</Label>
-            <Input type="text" name="title" id="title" placeholder="enter title" value={this.state.title} onChange={(event) => this.onChangeHandler(event)} />
+            <Input type="text" name="title" id="title" placeholder="enter a title" value={this.state.title} onChange={(event) => this.onChangeHandler(event)} />
           </FormGroup>
           <FormGroup>
             <Label for="subtitle">Subtitle</Label>
-            <Input type="text" name="subtitle" id="subtitle" placeholder="enter subtitle" value={this.state.subtitle} onChange={(value) => this.onChangeHandler(value)}/>
+            <Input type="text" name="subtitle" id="subtitle" placeholder="enter a subtitle" value={this.state.subtitle} onChange={(value) => this.onChangeHandler(value)}/>
           </FormGroup>
           <FormGroup>
             <Label for="keywords">Keywords</Label>
             <Input type="text" name="keywords" id="keywords" placeholder="enter keywords" value={this.state.keywords} onChange={(value) => this.onChangeHandler(value)} />
           </FormGroup>
           <FormGroup>
+            <Label for="category">Category</Label>
+            <Input type="text" name="category" id="category" placeholder="enter a category" value={this.state.category} onChange={(value) => this.onChangeHandler(value)} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="subCategory">Sub Category</Label>
+            <Input type="text" name="subCategory" id="subCategory" placeholder="enter a subCategory" value={this.state.subCategory} onChange={(value) => this.onChangeHandler(value)} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="tags">Tags</Label>
+            <Input type="text" name="tags" id="tags" placeholder="enter tags" value={this.state.tags} onChange={(value) => this.onChangeHandler(value)} />
+          </FormGroup>
+          <FormGroup>
             <Label for="description">Description</Label>
-            <Input type="textarea" name="description" id="description" placeholder="enter description" value={this.state.description} onChange={(value) => this.onChangeHandler(value)} />
+            <Input type="textarea" name="description" id="description" placeholder="enter a description" value={this.state.description} onChange={(value) => this.onChangeHandler(value)} />
           </FormGroup>       
           <FormGroup>
             <Label for="content">Content</Label>
-            <Input type="textarea" name="content" id="content" placeholder="enter content" value={this.state.content} onChange={(value) => this.onChangeHandler(value)} />
+            <Input type="textarea" name="content" id="content" placeholder="enter a content" value={this.state.content} onChange={(value) => this.onChangeHandler(value)} />
           </FormGroup>
           <FormGroup>
             <Label for="content">Likes</Label>
-            <Input type="text" name="likes" id="likes" placeholder="enter content" value={this.state.likes} onChange={(value) => this.onChangeHandler(value)} />
+            <Input type="text" name="likes" id="likes" placeholder="enter a content" value={this.state.likes} onChange={(value) => this.onChangeHandler(value)} />
           </FormGroup>
           <FormGroup>
             {
