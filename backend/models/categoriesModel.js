@@ -16,6 +16,7 @@ const CategoriesSchema = new Schema(
     category: String,
     subCategory: String,
     tags: String,
+    url: String,
     updatedAt: Date,
     updatedBy: String,
     createdAt: Date,
