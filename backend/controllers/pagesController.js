@@ -43,7 +43,7 @@ exports.pages_get_all = (req, res, next) => {
 exports.pages_get_one = (req, res, next) => { 
     const id = req.params.pageId;
     PagesModel.findById(id)
-    .select('_id title subtitle description keywords content likes images category subCategory tags createdBy createdAt updatedAt')
+    .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedAt')
     .exec()
     .then(result => {     
         if (result) {
@@ -52,7 +52,7 @@ exports.pages_get_one = (req, res, next) => {
                 title: result.title,
                 subtitle: result.subtitle,
                 description: result.description,
-                keywords : result.keywords,
+                keywords: result.keywords,
                 content: result.content,
                 likes: result.likes,
                 images: result.images,

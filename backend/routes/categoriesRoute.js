@@ -4,9 +4,8 @@ const express = require('express');
 const router = express.Router();
 const categoriesController = require('../controllers/categoriesController');
 
-// this is our get method
-// this method fetches all available pages in our database
-
-router.get('/', categoriesController.pages_get_all);
+router.use('/categories', categoriesController.categories);
+router.use('/:category/:url', categoriesController.category_get_one_by_url);
+router.use('/:category', categoriesController.category_get_all);
 
 module.exports = router;

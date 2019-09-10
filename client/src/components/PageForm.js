@@ -115,11 +115,32 @@ export default class PageForm extends React.Component {
     })
   }
 
+  //https://medium.com/dailyjs/web-developer-playbook-slug-a6dcbe06c284
+  slugify = (string) => {
+    const a = 'àáäâãåèéëêìíïîòóöôùúüûñçßÿœæŕśńṕẃǵǹḿǘẍźḧ·/_,:;'
+    const b = 'aaaaaaeeeeiiiioooouuuuncsyoarsnpwgnmuxzh------'
+    const p = new RegExp(a.split('').join('|'), 'g')
+    return string.toString().toLowerCase()
+      .replace(/\s+/g, '-') // Replace spaces with -
+      .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters in a with b
+      .replace(/&/g, '-and-') // Replace & with ‘and’
+      .replace(/[^\w-]+/g, '') // Remove all non-word characters such as spaces or tabs
+      .replace(/--+/g, '-') // Replace multiple — with single -
+      .replace(/^-+/, '') // Trim — from start of text
+      .replace(/-+$/, ''); // Trim — from end of text
+  }
+
   onChangeHandler = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
       formUpdate: true
     });    
+
+    if (event.target.name === "title") {
+      this.setState({
+        url: this.slugify(event.target.value)
+      });  
+    }
   }
 
   addImage = () => {
@@ -196,7 +217,7 @@ export default class PageForm extends React.Component {
     }
   }
 
-  render() {  
+  render() {
     return (
       <>
         <Form className="page-form"> 
@@ -211,14 +232,14 @@ export default class PageForm extends React.Component {
           } 
           <FormGroup className={'page-select'}>
             <Label for="active">Active?</Label>
-            <Input type="select" name="active" id="active" value={this.state.active } onChange={(event)=>this.onChangeHandler(event)}>
+            <Input type="select" name="active" id="active" value={this.state.active} onChange={(event)=>this.onChangeHandler(event)}>
               <option key={'option-active-false'} value={false}>False</option>
               <option key={'option-active-true'} value={true}>True</option>
             </Input>
           </FormGroup>
           <FormGroup>
             <Label for="url">URL</Label>
-            <Input type="text" name="url" id="url" placeholder="enter a url" value={this.state.url} onChange={(event) => this.onChangeHandler(event)} />
+            <Input type="text" name="url" id="url" readOnly placeholder="enter a url" value={this.state.url} />
           </FormGroup>    
           <FormGroup>
             <Label for="title">Title</Label>

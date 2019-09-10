@@ -32,9 +32,9 @@ export default class PageNav extends React.Component {
                 {
                   this.props.data !== null
                     ?
-                      <Badge className="page-badge" color="primary">{this.props.data.count} Page(s)</Badge>
+                      <Badge className="page-badge" color="primary">{this.props.data.count} Page(s) Found</Badge>
                     :
-                      <Badge className="page-badge" color="primary">0 Page</Badge>
+                      <Badge className="page-badge" color="primary">0 Page Found</Badge>
                 }
             </NavbarBrand>
             <Button className={"close-btn"} onClick={(e) => this.openFormHandler(true)}>&larr; Add Page</Button>
