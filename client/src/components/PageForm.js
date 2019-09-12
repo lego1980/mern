@@ -35,8 +35,6 @@ export default class PageForm extends React.Component {
   }
 
   closeFormHandler = (bool) => {
-    console.log("bool",bool);
-    console.log("this.state.formUpdate",this.state.formUpdate);
     if (this.state.formUpdate && !bool) {
       this.toggleModalFormUpdate();
     } else {
@@ -85,7 +83,6 @@ export default class PageForm extends React.Component {
     obj.createdAt = new Date().getTime();
     obj.updatedBy = '';
     obj.updatedAt = new Date().getTime();  
-    console.log("addHandler",obj);
     this.props.addHandler(obj);
   }
 
