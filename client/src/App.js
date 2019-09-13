@@ -17,8 +17,9 @@ class App extends Component {
       selectedItem : '', //default      
       http: "http://",
       https: "https://",
-      apiVersion: "1.0",
       api: "localhost:3001/api/",
+      apiVersion: "1.0",
+      apiTarget: "/cms",
       apiUrl: null,
       data: null,
       showForm: false
@@ -46,7 +47,7 @@ class App extends Component {
 
   UNSAFE_componentWillMount() {
     let that = this;
-    this.setState({ apiUrl: this.state.http +  this.state.api + this.state.apiVersion },() => {
+    this.setState({ apiUrl: this.state.http +  this.state.api + this.state.apiVersion + this.state.apiTarget },() => {
       that.getPages();
     });
   }

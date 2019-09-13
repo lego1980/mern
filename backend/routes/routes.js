@@ -9,7 +9,11 @@ const categoriesRoute = require('./categoriesRoute');
 // const categoriesController = require('../controllers/categoriesController');
 
 //router use rules
-router.use('/pages', pagesRoute);
-router.use('/', categoriesRoute);
+// cms site
+router.use('/cms/pages', pagesRoute);
+router.use('/cms/categories', categoriesRoute);
+
+// app site
+router.use('/app', categoriesRoute);
 
 module.exports = router;
