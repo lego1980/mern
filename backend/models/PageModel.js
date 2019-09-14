@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // this will be our data base's data structure 
-const CategoriesSchema = new Schema(
+const PageSchema = new Schema(
   {
     _id: { type: mongoose.Schema.Types.ObjectId }, 
     title: String,
@@ -27,4 +27,4 @@ const CategoriesSchema = new Schema(
 );
 
 // export the new Schema so we could modify it using Node.js
-module.exports = mongoose.model('CategoriesModel', CategoriesSchema);
+module.exports = mongoose.model('PageModel', PageSchema);

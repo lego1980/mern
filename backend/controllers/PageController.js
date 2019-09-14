@@ -1,10 +1,10 @@
 
 const mongoose = require("mongoose");
-const PagesModel = require('../models/pagesModel');
+const PageModel = require('../models/PageModel');
 
 //get all pages
 exports.pages_get_all = (req, res, next) => { 
-    PagesModel.find()
+    PageModel.find()
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
     .sort('-updatedAt')
     .exec()
@@ -42,7 +42,7 @@ exports.pages_get_all = (req, res, next) => {
 
 exports.pages_get_one = (req, res, next) => { 
     const id = req.params.pageId;
-    PagesModel.findById(id)
+    PageModel.findById(id)
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedAt')
     .exec()
     .then(result => {     
@@ -78,7 +78,7 @@ exports.pages_get_one = (req, res, next) => {
 
 //add page
 exports.pages_add_one = (req, res, next) => { 
-    const Page = new PagesModel({
+    const Page = new PageModel({
         _id: new mongoose.Types.ObjectId(),
         title: req.body.title,
         subtitle: req.body.subtitle,
@@ -130,7 +130,7 @@ exports.pages_add_one = (req, res, next) => {
 //delete page
 exports.pages_delete_one = (req, res, next) => { 
     const id = req.params.pageId;
-    PagesModel.deleteOne({_id:id}).exec(        
+    PageModel.deleteOne({_id:id}).exec(        
     ).then(result => {
         res.status(200).json({
             message: 'Page deleted'
@@ -149,7 +149,7 @@ exports.pages_patch_one = (req, res, next) => {
     for (const [key, value] of Object.entries(req.body)) {
         updateOps[key] = value;
     }
-    PagesModel.update(
+    PageModel.update(
         {_id:id}, 
         { $set: updateOps}
     )

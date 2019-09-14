@@ -1,10 +1,10 @@
 
 const mongoose = require("mongoose");
-const CategoriesModel = require('../models/CategoriesModel');
+const CategoryModel = require('../models/CategoryModel');
 
 //list categories
 exports.categories = (req, res, next) => { 
-    CategoriesModel.find()
+    CategoryModel.find()
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
     .sort('-updatedAt')
     .exec()
@@ -45,7 +45,7 @@ exports.categories = (req, res, next) => {
 exports.category_get_all_pages = (req, res, next) => { 
     console.log("categories_get_all",req.params);    
     const category = req.params.category;
-    CategoriesModel.find({ category : category })
+    CategoryModel.find({ category : category })
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
     .sort('-updatedAt')
     .exec()
@@ -86,7 +86,7 @@ exports.category_get_one_page = (req, res, next) => {
     const url = req.params.url;
     const category = req.params.category;
 
-    CategoriesModel.find({ url : url, category : category })
+    CategoryModel.find({ url : url, category : category })
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
     .sort('-updatedAt')
     .exec()

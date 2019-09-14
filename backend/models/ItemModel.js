@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // this will be our data base's data structure 
-const PagesSchema = new Schema(
+const ItemSchema = new Schema(
   {
     _id: { type: mongoose.Schema.Types.ObjectId }, 
     title: String,
@@ -27,4 +27,4 @@ const PagesSchema = new Schema(
 );
 
 // export the new Schema so we could modify it using Node.js
-module.exports = mongoose.model('PagesModel', PagesSchema);
+module.exports = mongoose.model('ItemModel', ItemSchema);
