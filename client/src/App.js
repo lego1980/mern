@@ -35,7 +35,7 @@ class App extends Component {
   setSelection = (id) => {
     let that = this;   
     if (id !== null && id !== '') {
-      let item = this.state.data.pages.find(
+      let item = this.state.data.items.find(
         ({ _id }) => _id === id
       );
       that.setState({ selectedItem : item })
@@ -55,8 +55,8 @@ class App extends Component {
   getPages = () => {
     let that = this;
     axios.get(this.state.apiUrl+'/items')
-      .then((pages) => {
-        that.setState({ data: pages.data.response })
+      .then((items) => {
+        that.setState({ data: items.data.response })
       })
   };
 
