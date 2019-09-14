@@ -1,5 +1,6 @@
 import React from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Badge, Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import './PageNav.css';
 
 export default class PageNav extends React.Component {
@@ -32,11 +33,12 @@ export default class PageNav extends React.Component {
                 {
                   this.props.data !== null
                     ?
-                      <Badge className="page-badge" color="primary">{this.props.data.count} Page(s) Found</Badge>
+                      <Badge className="page-badge" color="primary">{this.props.data.count} Page{this.props.data.count <= 1 ? "" : "s"} Found</Badge>
                     :
                       <Badge className="page-badge" color="primary">0 Page Found</Badge>
                 }
             </NavbarBrand>
+            <Link className={"btn btn-primary"} to={"/category"}>&larr; Go To Category Page</Link>
             <Button className={"close-btn"} onClick={(e) => this.openFormHandler(true)}>&larr; Add Page</Button>
           {/* <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse isOpen={!this.state.collapsed} navbar>

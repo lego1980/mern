@@ -24,6 +24,11 @@ class App extends Component {
                   exact                      
                   render={(props) => <AppCategory {...props} />}
                 />
+                <Route
+                  path='/'
+                  exact                      
+                  render={(props) => <AppPage {...props} />}
+                />
               </Switch>
             )} />
         </Router> 

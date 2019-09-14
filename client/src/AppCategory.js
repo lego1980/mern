@@ -69,11 +69,11 @@ class AppCategory extends Component {
   setSelection = (id) => {
     let that = this;   
     if (id !== null && id !== '') {
-      let item = this.state.data.items.find(
+      let item = this.state.dataCategory.items.find(
         ({ _id }) => _id === id
       );
       that.setState({ selectedCategory : item })
-      that.toggleShowCategoryForm(true);  
+      that.toggleShowForm(true);  
     } else {
       that.setState({ selectedCategory : '' })  
     }
