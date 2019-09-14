@@ -3,16 +3,19 @@
 const express = require('express');
 const router = express.Router();
 
-//category routes
-const PageRoute = require('./PageRoute');
-const ItemRoute = require('./ItemRoute');
+// cms routes
+const CmsCategoryRoute = require('./CmsCategoryRoute');
+const CmsItemRoute = require('./CmsItemRoute');
+
+// app routes
+const AppRoute = require('./AppRoute');
 
 //router use rules
 // cms site
-router.use('/cms/pages', PageRoute);
-router.use('/cms/categories', ItemRoute);
+router.use('/cms/items', CmsItemRoute);
+router.use('/cms/categories', CmsCategoryRoute);
 
 // app site
-router.use('/app', ItemRoute);
+router.use('/app', AppRoute);
 
 module.exports = router;

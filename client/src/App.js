@@ -54,7 +54,7 @@ class App extends Component {
 
   getPages = () => {
     let that = this;
-    axios.get(this.state.apiUrl+'/pages')
+    axios.get(this.state.apiUrl+'/items')
       .then((pages) => {
         that.setState({ data: pages.data.response })
       })
@@ -63,7 +63,7 @@ class App extends Component {
   addPage = (obj) => {  
     console.log("addPage",obj);  
     let that = this;
-    axios.post(this.state.apiUrl+'/pages', obj).then(res => {
+    axios.post(this.state.apiUrl+'/items', obj).then(res => {
       that.getPages();
     });   
   };
@@ -71,7 +71,7 @@ class App extends Component {
   deletePage = (obj) => {
     let that = this;
     let id = obj.id;
-    axios.delete(this.state.apiUrl+'/pages/'+id).then(res => {
+    axios.delete(this.state.apiUrl+'/items/'+id).then(res => {
       that.getPages();
       that.setState({ selectedItem : '' }) 
     });
@@ -81,7 +81,7 @@ class App extends Component {
     console.log('updatePage',obj);
     let that = this;
     let id = obj.id;
-    axios.post(this.state.apiUrl+'/pages/'+id, obj).then(res => {
+    axios.post(this.state.apiUrl+'/items/'+id, obj).then(res => {
       that.getPages();
       that.setState({ selectedItem : '' }) 
     });   

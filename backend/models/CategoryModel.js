@@ -23,8 +23,8 @@ const CategorySchema = new Schema(
     createdBy: String
 
   },
-  { collection: 'pages' }
+  { collection: 'categories' }
 );
 
 // export the new Schema so we could modify it using Node.js
-module.exports = mongoose.model('CategoryModel', CategorySchema);
+module.exports = mongoose.model('CategoriesModel', CategorySchema);

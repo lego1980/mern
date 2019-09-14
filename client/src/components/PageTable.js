@@ -32,7 +32,7 @@ export default class PageTable extends React.Component {
                     {
                         this.props.data !== null
                         ? 
-                            this.props.data.pages.map((item, i) => (
+                            this.props.data.items.map((item, i) => (
                                 <tr className={((id === item._id) ? "selected-row" : "")} key={'tr-'+item._id} onClick={()=>this.onClickHandler(item._id)}>
                                     <td>{i+1}</td>
                                     <td>{item._id}</td>
