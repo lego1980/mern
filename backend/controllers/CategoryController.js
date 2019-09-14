@@ -2,8 +2,8 @@
 const mongoose = require("mongoose");
 const CategoryModel = require('../models/CategoryModel');
 
-//get all items
-exports.get_all_items = (req, res, next) => { 
+//get all categories
+exports.get_all_categories = (req, res, next) => { 
     CategoryModel.find()
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
     .sort('-updatedAt')
@@ -40,11 +40,87 @@ exports.get_all_items = (req, res, next) => {
     });  
 }
 
+//get all active categories
+exports.get_all_active_categories = (req, res, next) => { 
+    CategoryModel.find({ active : true })
+    .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
+    .sort('-updatedAt')
+    .exec()
+    .then(result => {
+        const response = {
+            count: result.length,
+            items: result.map(result => {
+                return {
+                    _id: result._id,
+                    title: result.title,
+                    subtitle: result.subtitle,
+                    description: result.description,
+                    keywords: result.keywords,
+                    content: result.content,
+                    likes: result.likes,
+                    images: result.images,
+                    active: result.active,
+                    category: result.category,
+                    subCategory: result.subCategory,
+                    tags: result.tags,
+                    url: result.url,
+                    createdBy: result.createdBy,
+                    createdAt: result.createdAt,
+                    updatedBy: result.updatedBy,
+                    updatedAt: result.updatedAt                    
+                }
+            })
+        };
+        res.status(200).json({response});    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, items: [], count: 0});
+    });  
+}
 
-//get all by category
-exports.get_all_by_category = (req, res, next) => {   
+//get all category by category
+exports.get_all_category_by_category = (req, res, next) => {   
     const category = req.params.category;
     CategoryModel.find({ category : category })
+    .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
+    .sort('-updatedAt')
+    .exec()
+    .then(result => {
+        const response = {
+            count: result.length,
+            items: result.map(result => {
+                return {
+                    _id: result._id,
+                    title: result.title,
+                    subtitle: result.subtitle,
+                    description: result.description,
+                    keywords: result.keywords,
+                    content: result.content,
+                    likes: result.likes,
+                    images: result.images,
+                    active: result.active,
+                    category: result.category,
+                    subCategory: result.subCategory,
+                    tags: result.tags,
+                    url: result.url,
+                    createdBy: result.createdBy,
+                    createdAt: result.createdAt,
+                    updatedBy: result.updatedBy,
+                    updatedAt: result.updatedAt                    
+                }
+            })
+        };
+        res.status(200).json({response});    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, items: [], count: 0});
+    });  
+}
+
+//get all active category by category
+exports.get_all_active_category_by_category = (req, res, next) => {   
+    const category = req.params.category;
+    CategoryModel.find({ active : true, category : category })
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
     .sort('-updatedAt')
     .exec()

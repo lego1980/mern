@@ -2,15 +2,15 @@
 // core
 const express = require('express');
 const router = express.Router();
-const ItemController = require('../controllers/ItemController');
+const CategoryController = require('../controllers/CategoryController');
 
 // this is our get method
 // this method fetches all available pages in our database
 
-router.post('/', ItemController.add_item);
-router.get('/', ItemController.get_all_items);
-router.get('/:id', ItemController.get_item_by_id);
-router.delete('/:id', ItemController.delete_item_by_id);
-router.post('/:id', ItemController.patch_item_by_id);
+router.post('/', CategoryController.add_category);
+router.get('/', CategoryController.get_all_categories);
+router.get('/:id', CategoryController.get_category_by_id);
+router.delete('/:id', CategoryController.delete_category_by_id);
+router.post('/:id', CategoryController.patch_category_by_id);
 
 module.exports = router;

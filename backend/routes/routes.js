@@ -12,8 +12,8 @@ const AppRoute = require('./AppRoute');
 
 //router use rules
 // cms site
-router.use('/cms/items', CmsItemRoute);
-router.use('/cms/categories', CmsCategoryRoute);
+router.use('/cms/item', CmsItemRoute);
+router.use('/cms/category', CmsCategoryRoute);
 
 // app site
 router.use('/app', AppRoute);
