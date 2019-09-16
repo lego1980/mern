@@ -2,6 +2,78 @@
 const mongoose = require("mongoose");
 const CategoryModel = require('../models/CategoryModel');
 
+//get list of categories
+exports.get_list_of_categories = (req, res, next) => { 
+    CategoryModel.find()
+    .select('_id category url')
+    .sort('category')
+    .exec()
+    .then(result => {
+        const response = {
+            count: result.length,
+            items: result.map(result => {
+                return {
+                    _id: result._id,
+                    category: result.category,
+                    url: result.url                   
+                }
+            })
+        };
+        res.status(200).json({response});    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, items: [], count: 0});
+    });  
+}
+
+//get active list of categories
+exports.get_active_list_of_categories = (req, res, next) => { 
+    CategoryModel.find({ active : true })
+    .select('_id category url')
+    .sort('category')
+    .exec()
+    .then(result => {
+        const response = {
+            count: result.length,
+            items: result.map(result => {
+                return {
+                    _id: result._id,
+                    category: result.category,
+                    url: result.url                   
+                }
+            })
+        };
+        res.status(200).json({response});    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, items: [], count: 0});
+    });  
+}
+
+//get inactive list of categories
+exports.get_inactive_list_of_categories = (req, res, next) => { 
+    CategoryModel.find({ active : false })
+    .select('_id category url')
+    .sort('category')
+    .exec()
+    .then(result => {
+        const response = {
+            count: result.length,
+            items: result.map(result => {
+                return {
+                    _id: result._id,
+                    category: result.category,
+                    url: result.url                   
+                }
+            })
+        };
+        res.status(200).json({response});    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, items: [], count: 0});
+    });  
+}
+
 //get all categories
 exports.get_all_categories = (req, res, next) => { 
     CategoryModel.find()
