@@ -36,7 +36,7 @@ export default class CategoryTable extends React.Component {
                                 <tr className={((id === item._id) ? "selected-row" : "")} key={'tr-'+item._id} onClick={()=>this.onClickHandler(item._id)}>
                                     <td>{i+1}</td>
                                     <td>{item._id}</td>
-                                    <td><a href={"http://localhost:3000/"+item.category+"/"+item.url} target="_blank">{item.title}</a></td>
+                                    <td><a href={"http://localhost:3000/"+item.url} target="_blank">{item.title}</a></td>
                                     <td>{item.description}</td>
                                     <td>{item.content}</td>
                                     <td><Moment>{item.createdAt}</Moment></td>                                                                  
