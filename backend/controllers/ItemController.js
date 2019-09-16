@@ -1,6 +1,7 @@
 
 const mongoose = require("mongoose");
 const ItemModel = require('../models/ItemModel');
+const CategoryController = require('./CategoryController');
 
 //get all items
 exports.get_all_items = (req, res, next) => { 
@@ -111,7 +112,7 @@ exports.get_all_items_by_category = (req, res, next) => {
                     updatedAt: result.updatedAt                    
                 }
             })
-        };
+        };        
         res.status(200).json({response});    
     }).catch(err => {
         console.log(err)
@@ -149,7 +150,8 @@ exports.get_all_active_items_by_category = (req, res, next) => {
                     updatedBy: result.updatedBy,
                     updatedAt: result.updatedAt                    
                 }
-            })
+            }),
+            category : "test"
         };
         res.status(200).json({response});    
     }).catch(err => {
