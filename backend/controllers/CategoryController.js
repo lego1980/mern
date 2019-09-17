@@ -1,12 +1,12 @@
-
 const mongoose = require("mongoose");
 const CategoryModel = require('../models/CategoryModel');
+let defaultSort = {category : 1};
 
 //get list of categories
 exports.get_list_of_categories = (req, res, next) => { 
     CategoryModel.find()
     .select('_id category url')
-    .sort('category')
+    .sort(defaultSort)
     .exec()
     .then(result => {
         const response = {
@@ -30,7 +30,7 @@ exports.get_list_of_categories = (req, res, next) => {
 exports.get_active_list_of_categories = (req, res, next) => { 
     CategoryModel.find({ active : true })
     .select('_id category url')
-    .sort('category')
+    .sort(defaultSort)
     .exec()
     .then(result => {
         const response = {
@@ -54,7 +54,7 @@ exports.get_active_list_of_categories = (req, res, next) => {
 exports.get_inactive_list_of_categories = (req, res, next) => { 
     CategoryModel.find({ active : false })
     .select('_id category url')
-    .sort('category')
+    .sort(defaultSort)
     .exec()
     .then(result => {
         const response = {
@@ -78,7 +78,7 @@ exports.get_inactive_list_of_categories = (req, res, next) => {
 exports.get_all_categories = (req, res, next) => { 
     CategoryModel.find()
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
-    .sort('-updatedAt')
+    .sort(defaultSort)
     .exec()
     .then(result => {
         const response = {
@@ -116,7 +116,7 @@ exports.get_all_categories = (req, res, next) => {
 exports.get_all_active_categories = (req, res, next) => { 
     CategoryModel.find({ active : true })
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
-    .sort('-updatedAt')
+    .sort(defaultSort)
     .exec()
     .then(result => {
         const response = {
@@ -155,7 +155,7 @@ exports.get_category_by_category = (req, res, next) => {
     const category = req.params.category;
     CategoryModel.find({ category : category })
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
-    .sort('-updatedAt')
+    .sort(defaultSort)
     .exec()
     .then(result => {
         const response = {
@@ -194,7 +194,7 @@ exports.get_active_category_by_category = (req, res, next) => {
     const category = req.params.category;
     CategoryModel.find({ active : true, category : category })
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
-    .sort('-updatedAt')
+    .sort(defaultSort)
     .exec()
     .then(result => {
         const response = {

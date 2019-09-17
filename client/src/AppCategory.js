@@ -51,7 +51,7 @@ class AppCategory extends Component {
   deleteCategory = (obj) => {
     let that = this;
     let id = obj.id;
-    axios.delete(this.state.apiUrl + "/category" + id).then(res => {
+    axios.delete(this.state.apiUrl + "/category/" + id).then(res => {
       that.getCategories();
       that.setState({ selectedCategory : '' }) 
     });
@@ -60,7 +60,7 @@ class AppCategory extends Component {
   updateCategory = (obj) => {
     let that = this;
     let id = obj.id;
-    axios.post(this.state.apiUrl + "/category" + id, obj).then(res => {
+    axios.post(this.state.apiUrl + "/category/" + id, obj).then(res => {
       that.getCategories();
       that.setState({ selectedCategory : '' }) 
     });   

@@ -1,13 +1,13 @@
 
 const mongoose = require("mongoose");
 const ItemModel = require('../models/ItemModel');
-const CategoryController = require('./CategoryController');
+let defaultSort = {updatedAt : -1};
 
 //get all items
 exports.get_all_items = (req, res, next) => { 
     ItemModel.find()
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
-    .sort('-updatedAt')
+    .sort(defaultSort)
     .exec()
     .then(result => {
         const response = {
@@ -46,7 +46,7 @@ exports.get_all_items = (req, res, next) => {
 exports.get_all_active_items = (req, res, next) => { 
     ItemModel.find({ active : true })
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
-    .sort('-updatedAt')
+    .sort(defaultSort)
     .exec()
     .then(result => {
         const response = {
@@ -86,7 +86,7 @@ exports.get_all_items_by_category = (req, res, next) => {
     const category = req.params.category;
     ItemModel.find({ category : category })
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
-    .sort('-updatedAt')
+    .sort(defaultSort)
     .exec()
     .then(result => {
         const response = {
@@ -122,10 +122,11 @@ exports.get_all_items_by_category = (req, res, next) => {
 
 //get all atcitve items by category
 exports.get_all_active_items_by_category = (req, res, next) => {   
+    console.log("req",req.query);
     const category = req.params.category;
     ItemModel.find({ active : true, category : category })
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
-    .sort('-updatedAt')
+    .sort(defaultSort)
     .exec()
     .then(result => {
         const response = {
@@ -167,7 +168,7 @@ exports.get_item_by_category_and_url = (req, res, next) => {
 
     ItemModel.find({ url : url, category : category })
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
-    .sort('-updatedAt')
+    .sort(defaultSort)
     .exec()
     .then(result => {
         const response = {
@@ -208,7 +209,7 @@ exports.get_active_item_by_category_and_url = (req, res, next) => {
 
     ItemModel.find({ active : true, url : url, category : category })
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
-    .sort('-updatedAt')
+    .sort(defaultSort)
     .exec()
     .then(result => {
         const response = {
