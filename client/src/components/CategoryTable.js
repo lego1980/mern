@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Badge } from 'reactstrap';
+import { Table } from 'reactstrap';
 import Moment from 'react-moment';
 import './CategoryTable.css';
 
@@ -19,7 +19,7 @@ export default class CategoryTable extends React.Component {
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>ID</th>
+                    <th>Category Name</th>
                     <th>Title</th>
                     <th>Description</th>
                     <th>Content</th>
@@ -35,8 +35,8 @@ export default class CategoryTable extends React.Component {
                             this.props.data.items.map((item, i) => (
                                 <tr className={((id === item._id) ? "selected-row" : "")} key={'tr-'+item._id} onClick={()=>this.onClickHandler(item._id)}>
                                     <td>{i+1}</td>
-                                    <td>{item._id}</td>
-                                    <td><a href={"http://localhost:3000/"+item.url} target="_blank">{item.title}</a></td>
+                                    <td>{item.category}</td>
+                                    <td><a href={"http://localhost:3000/"+item.url} target="_blank" rel="noopener noreferrer">{item.title}</a></td>
                                     <td>{item.description}</td>
                                     <td>{item.content}</td>
                                     <td><Moment>{item.createdAt}</Moment></td>                                                                  

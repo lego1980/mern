@@ -172,7 +172,6 @@ export default class PageForm extends React.Component {
   }
 
   removeImageHandler = (event,i) => {
-    console.log("removeImageHandler",i);
     this.setState(state => {
       state.images.splice(i,1);
       const images = state.images;
@@ -252,7 +251,24 @@ export default class PageForm extends React.Component {
           </FormGroup>
           <FormGroup>
             <Label for="category">Category</Label>
-            <Input type="text" name="category" id="category" placeholder="enter a category" value={this.state.category} onChange={(value) => this.onChangeHandler(value)} />
+            {
+              /* 
+                <Input type="text" name="category" id="category" placeholder="enter a category" value={this.state.category} onChange={(value) => this.onChangeHandler(value)} />
+                <Label for="categorySelect">Select a category : </Label> 
+              */
+            }            
+            <Input type="select" name="category" id="category" onChange={(event)=>this.onChangeHandler(event)}>
+              <option key={"category-none"} value={""}>None</option>
+              {
+                this.props.listCategories !== null
+                ? 
+                  this.props.listCategories.items.map((item) => (
+                    <option selected={((this.state.category === item.category) ? "selected" : null)} key={'category-'+item._id} value={item.category}>{item.category}</option>
+                  ))
+                : 
+                  null
+              }
+            </Input>          
           </FormGroup>
           <FormGroup>
             <Label for="subCategory">Sub Category</Label>

@@ -10,7 +10,7 @@ import PageTable from './components/PageTable';
 
 class AppPage extends Component {
   // initialize our state
-  constructor(props){
+  constructor(props){    
     super(props);
     this.state = {         
       http: "http://",
@@ -22,7 +22,7 @@ class AppPage extends Component {
       data: null,
       selectedItem : '', //default 
       showForm: false
-    }
+    }   
   }  
 
   UNSAFE_componentWillMount() {
@@ -35,7 +35,7 @@ class AppPage extends Component {
   //page
   getPages = () => {
     let that = this;
-    axios.get(this.state.apiUrl+'/item')
+    axios.get(this.state.apiUrl + "/item")
       .then((items) => {
         that.setState({ data: items.data.response })
       })
@@ -43,7 +43,7 @@ class AppPage extends Component {
 
   addPage = (obj) => {
     let that = this;
-    axios.post(this.state.apiUrl+'/item', obj).then(res => {
+    axios.post(this.state.apiUrl + "/item", obj).then(res => {
       that.getPages();
     });   
   };
@@ -51,7 +51,7 @@ class AppPage extends Component {
   deletePage = (obj) => {
     let that = this;
     let id = obj.id;
-    axios.delete(this.state.apiUrl+'/item/'+id).then(res => {
+    axios.delete(this.state.apiUrl + "/item" + id).then(res => {
       that.getPages();
       that.setState({ selectedItem : '' }) 
     });
@@ -60,7 +60,7 @@ class AppPage extends Component {
   updatePage = (obj) => {
     let that = this;
     let id = obj.id;
-    axios.post(this.state.apiUrl+'/item/'+id, obj).then(res => {
+    axios.post(this.state.apiUrl + "/item" + id, obj).then(res => {
       that.getPages();
       that.setState({ selectedItem : '' }) 
     });   
@@ -92,7 +92,7 @@ class AppPage extends Component {
         <PageNav data={data} toggleShowForm={this.toggleShowForm} setSelection={this.setSelection} />
         <div className={"right-panel" + (this.state.showForm ? " show" : "")}>
           <PageSelect data={data} setSelection={this.setSelection} selectedItem={this.state.selectedItem} />
-          <PageForm data={data} selectedItem={this.state.selectedItem} addHandler={this.addPage} deleteHandler={this.deletePage} updateHandler={this.updatePage} showFormHandler={this.toggleShowForm} />
+          <PageForm data={data} listCategories={this.props.listCategories} selectedItem={this.state.selectedItem} addHandler={this.addPage} deleteHandler={this.deletePage} updateHandler={this.updatePage} showFormHandler={this.toggleShowForm} />
         </div>
         <div className={"left-panel"}>
           <PageTable data={data} setSelection={this.setSelection} selectedItem={this.state.selectedItem} />

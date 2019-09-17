@@ -1,5 +1,5 @@
 import React from 'react';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Badge, Button } from 'reactstrap';
+import {  Navbar, NavbarBrand, Badge, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './CategoryNav.css';
 

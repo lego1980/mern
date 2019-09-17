@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Badge } from 'reactstrap';
+import { Table } from 'reactstrap';
 import Moment from 'react-moment';
 import './PageTable.css';
 
@@ -36,7 +36,7 @@ export default class PageTable extends React.Component {
                                 <tr className={((id === item._id) ? "selected-row" : "")} key={'tr-'+item._id} onClick={()=>this.onClickHandler(item._id)}>
                                     <td>{i+1}</td>
                                     <td>{item._id}</td>
-                                    <td><a href={"http://localhost:3000/"+item.category+"/"+item.url} target="_blank">{item.title}</a></td>
+                                    <td><a href={"http://localhost:3000/"+item.category+"/"+item.url} target="_blank" rel="noopener noreferrer">{item.title}</a></td>
                                     <td>{item.description}</td>
                                     <td>{item.content}</td>
                                     <td><Moment>{item.createdAt}</Moment></td>                                                                  

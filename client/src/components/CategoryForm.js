@@ -250,7 +250,7 @@ export default class CategoryForm extends React.Component {
             <Input type="text" name="keywords" id="keywords" placeholder="enter keywords" value={this.state.keywords} onChange={(value) => this.onChangeHandler(value)} />
           </FormGroup>
           <FormGroup>
-            <Label for="category">Category</Label>
+            <Label for="category">Category Name</Label>
             <Input type="text" name="category" id="category" placeholder="enter a category" value={this.state.category} onChange={(value) => this.onChangeHandler(value)} />
           </FormGroup>
           <FormGroup>

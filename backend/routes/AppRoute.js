@@ -3,6 +3,10 @@
 const express = require('express');
 const router = express.Router();
 const ItemController = require('../controllers/ItemController');
+const CategoryController = require('../controllers/CategoryController');
+
+//list categories
+router.get('/listCategories', CategoryController.get_list_of_categories);
 
 //list all active items
 router.use('/categories', ItemController.get_all_active_items);
