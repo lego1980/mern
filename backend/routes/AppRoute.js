@@ -7,6 +7,7 @@ const CategoryController = require('../controllers/CategoryController');
 
 //list categories
 router.get('/listCategories', CategoryController.get_list_of_categories);
+router.get('/getCategory/:category', CategoryController.get_category_by_category);
 
 //list all active items
 router.use('/categories', ItemController.get_all_active_items);

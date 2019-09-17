@@ -150,8 +150,8 @@ exports.get_all_active_categories = (req, res, next) => {
     });  
 }
 
-//get all category by category
-exports.get_all_category_by_category = (req, res, next) => {   
+//get category by category
+exports.get_category_by_category = (req, res, next) => {   
     const category = req.params.category;
     CategoryModel.find({ category : category })
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
@@ -189,8 +189,8 @@ exports.get_all_category_by_category = (req, res, next) => {
     });  
 }
 
-//get all active category by category
-exports.get_all_active_category_by_category = (req, res, next) => {   
+//get active category by category
+exports.get_active_category_by_category = (req, res, next) => {   
     const category = req.params.category;
     CategoryModel.find({ active : true, category : category })
     .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
