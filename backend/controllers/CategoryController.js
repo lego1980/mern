@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
 const CategoryModel = require('../models/CategoryModel');
-let defaultSort = {category : 1};
+const sortQuery = require('../utils/sortQuery');
 
 //get list of categories
 exports.get_list_of_categories = (req, res, next) => { 
     CategoryModel.find()
     .select('_id category url')
-    .sort(defaultSort)
+    .collation({locale: "en" }) // case insensitive sorting
+    .sort(sortQuery(req.query))
     .exec()
     .then(result => {
         const response = {
@@ -30,7 +31,8 @@ exports.get_list_of_categories = (req, res, next) => {
 exports.get_active_list_of_categories = (req, res, next) => { 
     CategoryModel.find({ active : true })
     .select('_id category url')
-    .sort(defaultSort)
+    .collation({locale: "en" }) // case insensitive sorting
+    .sort(sortQuery(req.query))
     .exec()
     .then(result => {
         const response = {
@@ -54,7 +56,8 @@ exports.get_active_list_of_categories = (req, res, next) => {
 exports.get_inactive_list_of_categories = (req, res, next) => { 
     CategoryModel.find({ active : false })
     .select('_id category url')
-    .sort(defaultSort)
+    .collation({locale: "en" }) // case insensitive sorting
+    .sort(sortQuery(req.query))
     .exec()
     .then(result => {
         const response = {
@@ -77,33 +80,13 @@ exports.get_inactive_list_of_categories = (req, res, next) => {
 //get all categories
 exports.get_all_categories = (req, res, next) => { 
     CategoryModel.find()
-    .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
-    .sort(defaultSort)
+    .collation({locale: "en" }) // case insensitive sorting
+    .sort(sortQuery(req.query))
     .exec()
     .then(result => {
         const response = {
             count: result.length,
-            items: result.map(result => {
-                return {
-                    _id: result._id,
-                    title: result.title,
-                    subtitle: result.subtitle,
-                    description: result.description,
-                    keywords: result.keywords,
-                    content: result.content,
-                    likes: result.likes,
-                    images: result.images,
-                    active: result.active,
-                    category: result.category,
-                    subCategory: result.subCategory,
-                    tags: result.tags,
-                    url: result.url,
-                    createdBy: result.createdBy,
-                    createdAt: result.createdAt,
-                    updatedBy: result.updatedBy,
-                    updatedAt: result.updatedAt                    
-                }
-            })
+            items: result
         };
         res.status(200).json({response});    
     }).catch(err => {
@@ -115,33 +98,13 @@ exports.get_all_categories = (req, res, next) => {
 //get all active categories
 exports.get_all_active_categories = (req, res, next) => { 
     CategoryModel.find({ active : true })
-    .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
-    .sort(defaultSort)
+    .collation({locale: "en" }) // case insensitive sorting
+    .sort(sortQuery(req.query))
     .exec()
     .then(result => {
         const response = {
             count: result.length,
-            items: result.map(result => {
-                return {
-                    _id: result._id,
-                    title: result.title,
-                    subtitle: result.subtitle,
-                    description: result.description,
-                    keywords: result.keywords,
-                    content: result.content,
-                    likes: result.likes,
-                    images: result.images,
-                    active: result.active,
-                    category: result.category,
-                    subCategory: result.subCategory,
-                    tags: result.tags,
-                    url: result.url,
-                    createdBy: result.createdBy,
-                    createdAt: result.createdAt,
-                    updatedBy: result.updatedBy,
-                    updatedAt: result.updatedAt                    
-                }
-            })
+            items: result
         };
         res.status(200).json({response});    
     }).catch(err => {
@@ -154,33 +117,13 @@ exports.get_all_active_categories = (req, res, next) => {
 exports.get_category_by_category = (req, res, next) => {   
     const category = req.params.category;
     CategoryModel.find({ category : category })
-    .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
-    .sort(defaultSort)
+    .collation({locale: "en" }) // case insensitive sorting
+    .sort(sortQuery(req.query))
     .exec()
     .then(result => {
         const response = {
             count: result.length,
-            items: result.map(result => {
-                return {
-                    _id: result._id,
-                    title: result.title,
-                    subtitle: result.subtitle,
-                    description: result.description,
-                    keywords: result.keywords,
-                    content: result.content,
-                    likes: result.likes,
-                    images: result.images,
-                    active: result.active,
-                    category: result.category,
-                    subCategory: result.subCategory,
-                    tags: result.tags,
-                    url: result.url,
-                    createdBy: result.createdBy,
-                    createdAt: result.createdAt,
-                    updatedBy: result.updatedBy,
-                    updatedAt: result.updatedAt                    
-                }
-            })
+            items: result
         };
         res.status(200).json({response});    
     }).catch(err => {
@@ -193,33 +136,13 @@ exports.get_category_by_category = (req, res, next) => {
 exports.get_active_category_by_category = (req, res, next) => {   
     const category = req.params.category;
     CategoryModel.find({ active : true, category : category })
-    .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedBy updatedAt')
-    .sort(defaultSort)
+    .collation({locale: "en" }) // case insensitive sorting
+    .sort(sortQuery(req.query))
     .exec()
     .then(result => {
         const response = {
             count: result.length,
-            items: result.map(result => {
-                return {
-                    _id: result._id,
-                    title: result.title,
-                    subtitle: result.subtitle,
-                    description: result.description,
-                    keywords: result.keywords,
-                    content: result.content,
-                    likes: result.likes,
-                    images: result.images,
-                    active: result.active,
-                    category: result.category,
-                    subCategory: result.subCategory,
-                    tags: result.tags,
-                    url: result.url,
-                    createdBy: result.createdBy,
-                    createdAt: result.createdAt,
-                    updatedBy: result.updatedBy,
-                    updatedAt: result.updatedAt                    
-                }
-            })
+            items: result
         };
         res.status(200).json({response});    
     }).catch(err => {
@@ -282,30 +205,10 @@ exports.add_category = (req, res, next) => {
 exports.get_category_by_id = (req, res, next) => { 
     const id = req.params.id;
     CategoryModel.findById(id)
-    .select('_id title subtitle description keywords content likes images active category subCategory tags url createdBy createdAt updatedAt')
     .exec()
     .then(result => {     
         if (result) {
-            const response = {
-                _id: result._id,
-                title: result.title,
-                subtitle: result.subtitle,
-                description: result.description,
-                keywords: result.keywords,
-                content: result.content,
-                likes: result.likes,
-                images: result.images,
-                active: result.active,
-                category: result.category,
-                subCategory: result.subCategory,
-                tags: result.tags,
-                url: result.url,
-                createdBy: result.createdBy,
-                createdAt: result.createdAt,
-                updatedBy: result.updatedBy,
-                updatedAt: result.updatedAt
-            };
-            res.status(200).json({response});
+            res.status(200).json({result});
         } else {
             res.status(404).json({message: "No valid entry"});
         }        
