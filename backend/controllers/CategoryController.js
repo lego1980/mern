@@ -2,6 +2,21 @@ const mongoose = require("mongoose");
 const CategoryModel = require('../models/CategoryModel');
 const sortQuery = require('../utils/sortQuery');
 
+//get list of categories count only
+exports.get_list_of_categories_count = (req, res, next) => { 
+    CategoryModel.find()
+    .exec()
+    .then(result => {
+        const response = {
+            count: result.length
+        };
+        res.status(200).json({response});    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, count: 0});
+    });  
+}
+
 //get list of categories
 exports.get_list_of_categories = (req, res, next) => { 
     CategoryModel.find()
@@ -27,6 +42,21 @@ exports.get_list_of_categories = (req, res, next) => {
     });  
 }
 
+//get active list of categories count only
+exports.get_active_list_of_categories_count = (req, res, next) => { 
+    CategoryModel.find({ active : true })
+    .exec()
+    .then(result => {
+        const response = {
+            count: result.length
+        };
+        res.status(200).json({response});    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, count: 0});
+    });  
+}
+
 //get active list of categories
 exports.get_active_list_of_categories = (req, res, next) => { 
     CategoryModel.find({ active : true })
@@ -49,6 +79,21 @@ exports.get_active_list_of_categories = (req, res, next) => {
     }).catch(err => {
         console.log(err)
         res.status(500).json({error: err, items: [], count: 0});
+    });  
+}
+
+//get inactive list of categories count
+exports.get_inactive_list_of_categories_count = (req, res, next) => { 
+    CategoryModel.find({ active : false })
+    .exec()
+    .then(result => {
+        const response = {
+            count: result.length
+        };
+        res.status(200).json({response});    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, count: 0});
     });  
 }
 
@@ -155,6 +200,7 @@ exports.get_active_category_by_category = (req, res, next) => {
 exports.add_category = (req, res, next) => { 
     const Category = new CategoryModel({
         _id: new mongoose.Types.ObjectId(),
+        dataId: '',
         title: req.body.title,
         subtitle: req.body.subtitle,
         description: req.body.description,
@@ -177,6 +223,7 @@ exports.add_category = (req, res, next) => {
             message: 'Created page successfully',
             createdPage: {
                 _id: result._id,
+                dataId: '',
                 title: result.title,
                 subtitle: result.subtitle,
                 description: result.description,

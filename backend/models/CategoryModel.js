@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 // this will be our data base's data structure 
 const CategorySchema = new Schema(
   {
-    _id: { type: mongoose.Schema.Types.ObjectId }, 
+    _id: { type: mongoose.Schema.Types.ObjectId },
+    dataId: String, 
     title: String,
     subtitle: String,
     description: String,

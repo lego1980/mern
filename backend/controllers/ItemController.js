@@ -2,10 +2,28 @@
 const mongoose = require("mongoose");
 const ItemModel = require('../models/ItemModel');
 const sortQuery = require('../utils/sortQuery');
+const limitQuery = require('../utils/limitQuery');
+
+
+//get all items count only
+exports.get_all_items_count = (req, res, next) => { 
+    ItemModel.find()
+    .exec()
+    .then(result => {
+        const response = {
+            count: result.length
+        };
+        res.status(200).json({response});    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, count: 0});
+    });  
+}
 
 //get all items
 exports.get_all_items = (req, res, next) => { 
     ItemModel.find()
+    .limit(limitQuery(req.query))
     .collation({locale: "en" }) // case insensitive sorting
     .sort(sortQuery(req.query))
     .exec()
@@ -21,9 +39,27 @@ exports.get_all_items = (req, res, next) => {
     });  
 }
 
+//get all active items count only
+exports.get_all_active_items_count = (req, res, next) => {
+    console.log("get_all_active_items_counts",req.query);
+    ItemModel.find({ active : true })
+    .exec()
+    .then(result => {
+        const response = {
+            count: result.length
+        };
+        res.status(200).json({response});    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, count: 0});
+    })
+}
+
 //get all active items
 exports.get_all_active_items = (req, res, next) => {
+    console.log("get_all_active_items",req.query);
     ItemModel.find({ active : true })
+    .limit(limitQuery(req.query))
     .collation({locale: "en" }) // case insensitive sorting
     .sort(sortQuery(req.query))
     .exec()
@@ -37,6 +73,22 @@ exports.get_all_active_items = (req, res, next) => {
         console.log(err)
         res.status(500).json({error: err, items: [], count: 0});
     })
+}
+
+//get all items by category count only
+exports.get_all_items_by_category_count = (req, res, next) => {   
+    const category = req.params.category;
+    ItemModel.find({ category : category })   
+    .exec()
+    .then(result => {
+        const response = {
+            count: result.length
+        };        
+        res.status(200).json({response});    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, count: 0});
+    });  
 }
 
 //get all items by category
@@ -58,7 +110,23 @@ exports.get_all_items_by_category = (req, res, next) => {
     });  
 }
 
-//get all atcitve items by category
+//get all acitve items by category count only
+exports.get_all_active_items_by_category_count = (req, res, next) => {   
+    const category = req.params.category;
+    ItemModel.find({ active : true, category : category })
+    .exec()
+    .then(result => {
+        const response = {
+            count: result.length
+        };
+        res.status(200).json({response});    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, count: 0});
+    });  
+}
+
+//get all acitve items by category
 exports.get_all_active_items_by_category = (req, res, next) => {   
     const category = req.params.category;
     ItemModel.find({ active : true, category : category })
@@ -121,6 +189,7 @@ exports.get_active_item_by_category_and_url = (req, res, next) => {
 exports.add_item = (req, res, next) => { 
     const Item = new ItemModel({
         _id: new mongoose.Types.ObjectId(),
+        dataId: '',
         title: req.body.title,
         subtitle: req.body.subtitle,
         description: req.body.description,
@@ -143,6 +212,7 @@ exports.add_item = (req, res, next) => {
             message: 'Created page successfully',
             createdPage: {
                 _id: result._id,
+                dataId: '',
                 title: result.title,
                 subtitle: result.subtitle,
                 description: result.description,

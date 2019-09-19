@@ -1,22 +1,27 @@
-//https://stackoverflow.com/questions/19435580/sorting-alpha-with-mongoose
+//https://stackoverflow.com/questions/19435580/sorting-alpha-with-mongoose - using ".collation({locale: "en" })
 sortQuery = (query) => {
-    console.log("query1",query.f,query.o)
+    console.log("sortQuery",query.sortBy,query.sortField)
     let sortField = 'updatedAt';
     let sortOrder = -1;
-    if (query.hasOwnProperty('o')) {
-        if (query.o == '1') {
+    if (query.hasOwnProperty('sortBy')) {
+        if (query.sortBy == '1') {
             sortOrder = 1;
         }        
     }
-    if (query.hasOwnProperty('f')) {
-        if (query.f == 'title') {
+    if (query.hasOwnProperty('sortField')) {
+        if (query.sortField == 'title') {
             return ({title:sortOrder});
         }
-        if (query.f == 'category') {
+        if (query.sortField == 'category') {
             return ({category:sortOrder});
-        }        
+        }
+        if (query.sortField == 'updatedAt') {
+            return ({category:sortOrder});
+        }
+        if (query.sortField == 'createdAt') {
+            return ({category:sortOrder});
+        }         
     }
     return ({[sortField]:sortOrder});  
 }
-
 module.exports = sortQuery;
