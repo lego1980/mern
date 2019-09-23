@@ -6,42 +6,63 @@
     background: #f1f1f1;
 }
 
+.page-table button {
+    font-size: 1.4rem;
+    display: inline;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.page-table.table thead th {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
 .page-table tbody tr:hover {
     cursor: pointer;
 }
 
-.page-table .page-badge {
-    font-size: 1.5rem;
-}
-
+.page-table tr th:nth-child(1),
 .page-table tr td:nth-child(1) {
+    text-align:  right;
     width: 1%;
 }
 
 .page-table tr td:nth-child(2) {
+    text-align:  left;
     width: 4%;
 }
 
+.page-table tr th:nth-child(3),
 .page-table tr td:nth-child(3) {
+    text-align:  center;
     width: 20%
 }
 
+.page-table tr th:nth-child(4),
 .page-table tr td:nth-child(4) {
-    width: 25%
+    text-align:  center;
+    width: 15%
 }
 
 .page-table tr td:nth-child(5) {
     width: 35%
 }
 
+.page-table tr th:nth-child(6),
 .page-table tr td:nth-child(6) {
-    width: 5%
+    text-align:  center;
+    width: 10%
 }
 
+.page-table tr th:nth-child(7),
 .page-table tr td:nth-child(7) {
-    width: 5%
+    text-align:  center;
+    width: 10%
 }
 
+.page-table tr th:nth-child(8),
 .page-table tr td:nth-child(8) {
+    text-align:  center;
     width: 5%
 }

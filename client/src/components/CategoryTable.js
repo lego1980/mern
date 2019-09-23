@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'reactstrap';
+import { Table, Button } from 'reactstrap';
 import Moment from 'react-moment';
 import './CategoryTable.css';
 
@@ -7,6 +7,9 @@ export default class CategoryTable extends React.Component {
     onClickHandler = (id) => {
         this.props.setSelection(id);
     }
+    onSortClickHandler = (e, params) => {
+        this.props.sortToggle(params);
+    };
     render() {
         let {id} = '';
         if (this.props.selectedCategory !== null) {
@@ -19,12 +22,11 @@ export default class CategoryTable extends React.Component {
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Category Name</th>
-                    <th>Title</th>
-                    <th>Description</th>
+                    <th><Button onClick={(e) => this.onSortClickHandler(e, { sortField : 'category' })} color="link">Category &uarr;&darr;</Button></th>
+                    <th><Button onClick={(e) => this.onSortClickHandler(e, { sortField : 'title' })} color="link">Title &uarr;&darr;</Button></th>
                     <th>Content</th>
-                    <th>Created</th>
-                    <th>Updated</th>
+                    <th><Button onClick={(e) => this.onSortClickHandler(e, { sortField : 'createdAt' })} color="link">Created &uarr;&darr;</Button></th>
+                    <th><Button onClick={(e) => this.onSortClickHandler(e, { sortField : 'updatedAt' })} color="link">Updated &uarr;&darr;</Button></th>
                     <th>Active</th>
                 </tr>
                 </thead>
@@ -37,7 +39,6 @@ export default class CategoryTable extends React.Component {
                                     <td>{i+1}</td>
                                     <td>{item.category}</td>
                                     <td><a href={"http://localhost:3000/"+item.url} target="_blank" rel="noopener noreferrer">{item.title}</a></td>
-                                    <td>{item.description}</td>
                                     <td>{item.content}</td>
                                     <td><Moment>{item.createdAt}</Moment></td>                                                                  
                                     <td><Moment>{item.updatedAt}</Moment></td>

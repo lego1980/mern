@@ -21,21 +21,44 @@ class AppCategory extends Component {
       apiUrl: null,
       dataCategory: null,
       selectedCategory : '', //default 
-      showCategoryForm: false
+      showCategoryForm: false,
+      sortOrder:  -1,
+      sortField: 'updatedBy',
+      sortParams: null,
+      collection: "category"
     }
   }  
 
   UNSAFE_componentWillMount() {
     let that = this;
-    this.setState({ apiUrl: this.state.http +  this.state.api + this.state.apiVersion + this.state.apiTarget },() => {
-      that.getCategories();
+    this.setState({ sortParams : "?sortField="+this.state.sortField+"&sortOrder="+this.state.sortOrder + that.state.sortParams }, () => {
+      that.setState({ apiUrl: that.state.http +  that.state.api + that.state.apiVersion + that.state.apiTarget + "/" + that.state.collection},() => {
+        that.getCategories();
+      });
     });
+  }
+
+  sortToggle = (params) => {
+    let that = this;
+    console.log("that.state.sortOrder cateogry",that.state.sortOrder);
+    if (params.hasOwnProperty("sortField")) {
+      let sortOrder = (that.state.sortOrder === 1) ? -1 : 1;
+      that.setState({ sortField : params.sortField, sortOrder : sortOrder }, () => {
+        that.setState({ sortParams : "?sortField="+that.state.sortField+"&sortOrder="+that.state.sortOrder }, () => {
+          that.setState({ apiUrl: that.state.http +  that.state.api + that.state.apiVersion + that.state.apiTarget + "/" + that.state.collection + that.state.sortParams },() => {
+            that.getCategories();
+          });
+        });
+      })
+    } else {
+      console.log("Category params propeties are undefined");
+    }    
   }
 
   //category
   getCategories = () => {
     let that = this;
-    axios.get(this.state.apiUrl + "/category")
+    axios.get(this.state.apiUrl)
       .then((items) => {
         that.setState({ dataCategory: items.data.response })
       })
@@ -95,7 +118,7 @@ class AppCategory extends Component {
           <CategoryForm data={dataCategory} selectedCategory={this.state.selectedCategory} addHandler={this.addCategory} deleteHandler={this.deleteCategory} updateHandler={this.updateCategory} showFormHandler={this.toggleShowForm} />
         </div>
         <div className={"left-panel"}>
-          <CategoryTable data={dataCategory} setSelection={this.setSelection} selectedCategory={this.state.selectedCategory} />
+          <CategoryTable data={dataCategory} setSelection={this.setSelection} selectedCategory={this.state.selectedCategory} sortToggle={this.sortToggle} />
         </div>
       </div>      
     );

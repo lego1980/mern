@@ -1,4 +1,4 @@
-.page-table {
+.category-table {
     position: relative;
 }
 
@@ -6,42 +6,60 @@
     background: #f1f1f1;
 }
 
-.page-table tbody tr:hover {
+
+.category-table button {
+    font-size: 1.4rem;
+    display: inline;
+    font-weight: bold;
     cursor: pointer;
 }
 
-.page-table .page-badge {
-    font-size: 1.5rem;
+.category-table.table thead th {
+    padding: 1rem;
+    vertical-align: middle;
 }
 
-.page-table tr td:nth-child(1) {
+.category-table tbody tr:hover {
+    cursor: pointer;
+}
+
+.category-table tr th:nth-child(1),
+.category-table tr td:nth-child(1) {
+    text-align:  right;
     width: 1%;
 }
 
-.page-table tr td:nth-child(2) {
-    width: 4%;
+.category-table tr th:nth-child(2),
+.category-table tr td:nth-child(2) {
+    text-align:  center;
+    width: 10%;
 }
 
-.page-table tr td:nth-child(3) {
+.category-table tr th:nth-child(3),
+.category-table tr td:nth-child(3) {
+    text-align:  center;
     width: 20%
 }
 
-.page-table tr td:nth-child(4) {
-    width: 25%
+.category-table tr th:nth-child(4),
+.category-table tr td:nth-child(4) {
+    width: 10%
 }
 
-.page-table tr td:nth-child(5) {
-    width: 35%
+.category-table tr th:nth-child(5),
+.category-table tr td:nth-child(5) {
+    text-align:  center;
+    width: 10%
 }
 
-.page-table tr td:nth-child(6) {
-    width: 5%
+.category-table tr th:nth-child(6),
+.category-table tr td:nth-child(6) {
+    text-align:  center;
+    width: 10%
 }
 
-.page-table tr td:nth-child(7) {
-    width: 5%
-}
-
-.page-table tr td:nth-child(8) {
+.category-table tr th:nth-child(7),
+.category-table tr td:nth-child(7) {
+    text-align:  center;
     width: 5%
 }

@@ -20,22 +20,45 @@ class AppPage extends Component {
       apiTarget: "/cms",
       apiUrl: null,
       data: null,
-      selectedItem : '', //default 
-      showForm: false
+      selectedItem: '', //default 
+      showForm: false,
+      sortOrder:  -1,
+      sortField: 'updatedBy',
+      sortParams: null,
+      collection: "item"
     }   
   }  
 
   UNSAFE_componentWillMount() {
     let that = this;
-    this.setState({ apiUrl: this.state.http +  this.state.api + this.state.apiVersion + this.state.apiTarget },() => {
-      that.getPages();
+    this.setState({ sortParams : "?sortField="+this.state.sortField+"&sortOrder="+this.state.sortOrder + that.state.sortParams }, () => {
+      that.setState({ apiUrl: that.state.http +  that.state.api + that.state.apiVersion + that.state.apiTarget + "/" + that.state.collection},() => {
+        that.getPages();
+      });
     });
+  }
+
+  sortToggle = (params) => {
+    let that = this;
+    console.log("that.state.sortOrder item",that.state.sortOrder);
+    if (params.hasOwnProperty("sortField")) {
+      let sortOrder = (that.state.sortOrder === 1) ? -1 : 1;
+      that.setState({ sortField : params.sortField, sortOrder : sortOrder }, () => {
+        that.setState({ sortParams : "?sortField="+that.state.sortField+"&sortOrder="+that.state.sortOrder }, () => {
+          that.setState({ apiUrl: that.state.http +  that.state.api + that.state.apiVersion + that.state.apiTarget + "/" + that.state.collection + that.state.sortParams },() => {
+            that.getPages();
+          });
+        });
+      })
+    } else {
+      console.log("Items params propeties are undefined");
+    }    
   }
 
   //page
   getPages = () => {
     let that = this;
-    axios.get(this.state.apiUrl + "/item")
+    axios.get(this.state.apiUrl)
       .then((items) => {
         that.setState({ data: items.data.response })
       })
@@ -95,7 +118,7 @@ class AppPage extends Component {
           <PageForm data={data} listCategories={this.props.listCategories} selectedItem={this.state.selectedItem} addHandler={this.addPage} deleteHandler={this.deletePage} updateHandler={this.updatePage} showFormHandler={this.toggleShowForm} />
         </div>
         <div className={"left-panel"}>
-          <PageTable data={data} setSelection={this.setSelection} selectedItem={this.state.selectedItem} />
+          <PageTable data={data} setSelection={this.setSelection} selectedItem={this.state.selectedItem} sortToggle={this.sortToggle} />
         </div>
       </div>      
     );

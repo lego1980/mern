@@ -1,12 +1,13 @@
 //https://stackoverflow.com/questions/19435580/sorting-alpha-with-mongoose - using ".collation({locale: "en" })
 sortQuery = (query) => {
-    console.log("sortQuery",query.sortBy,query.sortField)
+    console.log("sortQuery",query.sortOrder,typeof query.sortOrder,query.sortField)
     let sortField = 'updatedAt';
     let sortOrder = -1;
-    if (query.hasOwnProperty('sortBy')) {
-        if (query.sortBy == '1') {
+    if (query.hasOwnProperty('sortOrder')) {
+        if (query.sortOrder == '1') {
             sortOrder = 1;
-        }        
+        }  
+        console.log("sortOrder",sortOrder,typeof sortOrder)      
     }
     if (query.hasOwnProperty('sortField')) {
         if (query.sortField == 'title') {
