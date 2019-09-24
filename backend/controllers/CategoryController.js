@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const CategoryModel = require('../models/CategoryModel');
 const sortQuery = require('../utils/sortQuery');
+const limitQuery = require('../utils/limitQuery');
+const pageQuery = require('../utils/pageQuery');
 
 //get list of categories count only
 exports.get_list_of_categories_count = (req, res, next) => { 
@@ -140,6 +142,45 @@ exports.get_all_categories = (req, res, next) => {
     });  
 }
 
+//get all categories pagination
+exports.get_all_categories_pagination = (req, res, next) => { 
+    let limit = limitQuery(req.query);
+    let pageNo = pageQuery(req.query);
+    let skip = 0;
+    let totalPages = 0;
+    CategoryModel.find()
+    .exec()
+    .then(count => {
+        //set skip
+        skip = limit * (pageNo - 1)
+        CategoryModel.find()
+        .limit(limit)
+        .skip(skip)
+        .collation({locale: "en" }) // case insensitive sorting
+        .sort(sortQuery(req.query))
+        .exec()
+        .then(result => {
+            //set total pages
+            totalPages = (result.length !== 0) ? Math.ceil((count.length / result.length) * 1) : 0;
+            const response = {
+                limit: limit,
+                pageNo: pageNo,
+                totalPages: totalPages,
+                totalCount: count.length,
+                count: result.length,
+                items: result
+            };
+            res.status(200).json({response});    
+        }).catch(err => {
+            console.log(err)
+            res.status(500).json({error: err, items: [], count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit});
+        });    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit});
+    });
+}
+
 //get all active categories
 exports.get_all_active_categories = (req, res, next) => { 
     CategoryModel.find({ active : true })
@@ -157,6 +198,47 @@ exports.get_all_active_categories = (req, res, next) => {
         res.status(500).json({error: err, items: [], count: 0});
     });  
 }
+
+
+//get all active categories pagination
+exports.get_all_active_categories_pagination = (req, res, next) => { 
+    let limit = limitQuery(req.query);
+    let pageNo = pageQuery(req.query);
+    let skip = 0;
+    let totalPages = 0;
+    CategoryModel.find({ active : true })
+    .exec()
+    .then(count => {
+        //set skip
+        skip = limit * (pageNo - 1)
+        CategoryModel.find({ active : true })
+        .limit(limit)
+        .skip(skip)
+        .collation({locale: "en" }) // case insensitive sorting
+        .sort(sortQuery(req.query))
+        .exec()
+        .then(result => {
+            //set total pages
+            totalPages = (result.length !== 0) ? Math.ceil((count.length / result.length) * 1) : 0;
+            const response = {
+                limit: limit,
+                pageNo: pageNo,
+                totalPages: totalPages,
+                totalCount: count.length,
+                count: result.length,
+                items: result
+            };
+            res.status(200).json({response});    
+        }).catch(err => {
+            console.log(err)
+            res.status(500).json({error: err, items: [], count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit});
+        });    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit});
+    });
+}
+
 
 //get category by category
 exports.get_category_by_category = (req, res, next) => {   

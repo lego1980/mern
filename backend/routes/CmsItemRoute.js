@@ -8,7 +8,7 @@ const ItemController = require('../controllers/ItemController');
 // this method fetches all available pages in our database
 
 router.post('/', ItemController.add_item);
-router.get('/', ItemController.get_all_items);
+router.get('/', ItemController.get_all_items_pagination);
 router.get('/:id', ItemController.get_item_by_id);
 router.delete('/:id', ItemController.delete_item_by_id);
 router.post('/:id', ItemController.patch_item_by_id);

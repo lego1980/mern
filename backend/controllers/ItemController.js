@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const ItemModel = require('../models/ItemModel');
 const sortQuery = require('../utils/sortQuery');
 const limitQuery = require('../utils/limitQuery');
-
+const pageQuery = require('../utils/pageQuery');
 
 //get all items count only
 exports.get_all_items_count = (req, res, next) => { 
@@ -37,6 +37,45 @@ exports.get_all_items = (req, res, next) => {
         console.log(err)
         res.status(500).json({error: err, items: [], count: 0});
     });  
+}
+
+//get all items with pagination
+exports.get_all_items_pagination = (req, res, next) => { 
+    let limit = limitQuery(req.query);
+    let pageNo = pageQuery(req.query);
+    let skip = 0;
+    let totalPages = 0;
+    ItemModel.find()
+    .exec()
+    .then(count => {
+        //set skip
+        skip = limit * (pageNo - 1)
+        ItemModel.find()
+        .limit(limit)
+        .skip(skip)
+        .collation({locale: "en" }) // case insensitive sorting
+        .sort(sortQuery(req.query))
+        .exec()
+        .then(result => {
+            //set total pages
+            totalPages = (result.length !== 0) ? Math.ceil((count.length / result.length) * 1) : 0;
+            const response = {
+                limit: limit,
+                pageNo: pageNo,
+                totalPages: totalPages,
+                totalCount: count.length,
+                count: result.length,
+                items: result
+            };
+            res.status(200).json({response});    
+        }).catch(err => {
+            console.log(err)
+            res.status(500).json({error: err, items: [], count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit});
+        });    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit});
+    });
 }
 
 //get all active items count only
@@ -73,6 +112,45 @@ exports.get_all_active_items = (req, res, next) => {
         console.log(err)
         res.status(500).json({error: err, items: [], count: 0});
     })
+}
+
+//get all active items with pagination
+exports.get_all_active_items_pagination = (req, res, next) => { 
+    let limit = limitQuery(req.query);
+    let pageNo = pageQuery(req.query);
+    let skip = 0;
+    let totalPages = 0;
+    ItemModel.find({ active : true })
+    .exec()
+    .then(count => {
+        //set skip
+        skip = limit * (pageNo - 1)
+        ItemModel.find({ active : true })
+        .limit(limit)
+        .skip(skip)
+        .collation({locale: "en" }) // case insensitive sorting
+        .sort(sortQuery(req.query))
+        .exec()
+        .then(result => {
+            //set total pages
+            totalPages = (result.length !== 0) ? Math.ceil((count.length / result.length) * 1) : 0;
+            const response = {
+                limit: limit,
+                pageNo: pageNo,
+                totalPages: totalPages,
+                totalCount: count.length,
+                count: result.length,
+                items: result
+            };
+            res.status(200).json({response});    
+        }).catch(err => {
+            console.log(err)
+            res.status(500).json({error: err, items: [], count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit});
+        });    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit});
+    });
 }
 
 //get all items by category count only
