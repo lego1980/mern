@@ -51,10 +51,26 @@ class AppCategory extends Component {
         });
       })
     } else {
-      console.log("Category params propeties are undefined");
+      console.log("Params propeties are undefined");
     }    
   }
 
+  pagination = (params) => {
+    let that = this;
+    if (params.hasOwnProperty("pageNo") && params.hasOwnProperty("limitPerPage")) {
+      let sortOrder = (that.state.sortOrder === 1) ? -1 : 1;
+      that.setState({ limitPerPage : params.limitPerPage, pageNo : params.pageNo }, () => {
+        that.setState({ sortParams : "?sortField="+that.state.sortField+"&sortOrder="+that.state.sortOrder+"&pageNo="+that.state.pageNo+"&limitPerPage="+that.state.limitPerPage }, () => {
+          that.setState({ apiUrl: that.state.http +  that.state.api + that.state.apiVersion + that.state.apiTarget + "/" + that.state.collection + that.state.sortParams },() => {
+            that.getCategories();
+          });
+        });
+      })
+    } else {
+      console.log("Params propeties are undefined");
+    }    
+  }
+  
   //category
   getCategories = () => {
     let that = this;
@@ -112,7 +128,7 @@ class AppCategory extends Component {
     const { dataCategory } = this.state;
     return (
       <div className={"app"}>
-        <CategoryNav data={dataCategory} toggleShowForm={this.toggleShowForm} setSelection={this.setSelection} />
+        <CategoryNav data={dataCategory} toggleShowForm={this.toggleShowForm} setSelection={this.setSelection} pagination={this.pagination} />
         <div className={"right-panel" + (this.state.showCategoryForm ? " show" : "")}>
           <CategorySelect data={dataCategory} setSelection={this.setSelection} selectedCategory={this.state.selectedCategory} />
           <CategoryForm data={dataCategory} selectedCategory={this.state.selectedCategory} addHandler={this.addCategory} deleteHandler={this.deleteCategory} updateHandler={this.updateCategory} showFormHandler={this.toggleShowForm} />

@@ -1,6 +1,7 @@
 import React from 'react';
 import {  Navbar, NavbarBrand, Badge, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import ItemPagination from './ItemPagination';
 import './PageNav.css';
 
 export default class PageNav extends React.Component {
@@ -12,7 +13,7 @@ export default class PageNav extends React.Component {
       collapsed: true
     };
   }
-
+  
   openFormHandler = (bool) => {
     this.props.setSelection('');
     this.props.toggleShowForm(bool);
@@ -33,7 +34,10 @@ export default class PageNav extends React.Component {
                 {
                   this.props.data !== null
                     ?
-                      <Badge className="page-badge" color="primary">{this.props.data.count} Page{this.props.data.count <= 1 ? "" : "s"} Found</Badge>
+                      <>
+                        <Badge className="page-badge" color="primary">{this.props.data.count} Page{this.props.data.count <= 1 ? "" : "s"} Found</Badge>
+                        <ItemPagination data={this.props.data} pagination={this.props.pagination}/>
+                      </>
                     :
                       <Badge className="page-badge" color="primary">0 Page Found</Badge>
                 }

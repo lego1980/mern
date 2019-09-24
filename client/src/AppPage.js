@@ -25,13 +25,15 @@ class AppPage extends Component {
       sortOrder:  -1,
       sortField: 'updatedBy',
       sortParams: null,
-      collection: "item"
+      collection: "item",
+      pageNo: 1, //default
+      limitPerPage: 5 //default
     }   
   }  
 
   UNSAFE_componentWillMount() {
     let that = this;
-    this.setState({ sortParams : "?sortField="+this.state.sortField+"&sortOrder="+this.state.sortOrder + that.state.sortParams }, () => {
+    this.setState({ sortParams : "?sortField="+this.state.sortField+"&sortOrder="+this.state.sortOrder + that.state.sortParams+"&pageNo="+that.state.pageNo+"&limitPerPage="+that.state.limitPerPage }, () => {
       that.setState({ apiUrl: that.state.http +  that.state.api + that.state.apiVersion + that.state.apiTarget + "/" + that.state.collection},() => {
         that.getPages();
       });
@@ -40,18 +42,33 @@ class AppPage extends Component {
 
   sortToggle = (params) => {
     let that = this;
-    console.log("that.state.sortOrder item",that.state.sortOrder);
     if (params.hasOwnProperty("sortField")) {
       let sortOrder = (that.state.sortOrder === 1) ? -1 : 1;
       that.setState({ sortField : params.sortField, sortOrder : sortOrder }, () => {
-        that.setState({ sortParams : "?sortField="+that.state.sortField+"&sortOrder="+that.state.sortOrder }, () => {
+        that.setState({ sortParams : "?sortField="+that.state.sortField+"&sortOrder="+that.state.sortOrder+"&pageNo="+that.state.pageNo+"&limitPerPage="+that.state.limitPerPage }, () => {
           that.setState({ apiUrl: that.state.http +  that.state.api + that.state.apiVersion + that.state.apiTarget + "/" + that.state.collection + that.state.sortParams },() => {
             that.getPages();
           });
         });
       })
     } else {
-      console.log("Items params propeties are undefined");
+      console.log("Params propeties are undefined");
+    }    
+  }
+
+  pagination = (params) => {
+    let that = this;
+    if (params.hasOwnProperty("pageNo") && params.hasOwnProperty("limitPerPage")) {
+      let sortOrder = (that.state.sortOrder === 1) ? -1 : 1;
+      that.setState({ limitPerPage : params.limitPerPage, pageNo : params.pageNo }, () => {
+        that.setState({ sortParams : "?sortField="+that.state.sortField+"&sortOrder="+that.state.sortOrder+"&pageNo="+that.state.pageNo+"&limitPerPage="+that.state.limitPerPage }, () => {
+          that.setState({ apiUrl: that.state.http +  that.state.api + that.state.apiVersion + that.state.apiTarget + "/" + that.state.collection + that.state.sortParams },() => {
+            that.getPages();
+          });
+        });
+      })
+    } else {
+      console.log("Params propeties are undefined");
     }    
   }
 
@@ -112,7 +129,7 @@ class AppPage extends Component {
     const { data } = this.state;
     return (
       <div className={"app"}>
-        <PageNav data={data} toggleShowForm={this.toggleShowForm} setSelection={this.setSelection} />
+        <PageNav data={data} toggleShowForm={this.toggleShowForm} setSelection={this.setSelection} pagination={this.pagination} />
         <div className={"right-panel" + (this.state.showForm ? " show" : "")}>
           <PageSelect data={data} setSelection={this.setSelection} selectedItem={this.state.selectedItem} />
           <PageForm data={data} listCategories={this.props.listCategories} selectedItem={this.state.selectedItem} addHandler={this.addPage} deleteHandler={this.deletePage} updateHandler={this.updatePage} showFormHandler={this.toggleShowForm} />

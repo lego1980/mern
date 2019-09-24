@@ -9,7 +9,7 @@ export default class PageTable extends React.Component {
     }
     onSortClickHandler = (e, params) => {
         this.props.sortToggle(params);
-    };
+    }
     render() {
         let {id} = '';
         if (this.props.selectedItem !== null) {
