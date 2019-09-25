@@ -8,11 +8,11 @@ export default class ItemPagination extends React.Component {
     this.props.pagination(params);
   }
   
-  paginationItem = (page,selectedPage) => {
+  paginationItem = (page, selectedPage, limit) => {
     if (page === selectedPage) {
       return(
         <PaginationItem active>
-          <button href="#" onClick={(e) => this.paginationHandler({ pageNo: page, limitPerPage: 5 }, e)}>
+          <button href="#" onClick={(e) => this.paginationHandler({ pageNo: page, limitPerPage: limit }, e)}>
             {page}
           </button>
         </PaginationItem>
@@ -20,7 +20,7 @@ export default class ItemPagination extends React.Component {
     } else {
       return(
         <PaginationItem>
-          <button href="#" onClick={(e) => this.paginationHandler({ pageNo: page, limitPerPage: 5 }, e)}>
+          <button href="#" onClick={(e) => this.paginationHandler({ pageNo: page, limitPerPage: limit }, e)}>
             {page}
           </button>
         </PaginationItem>
@@ -33,11 +33,19 @@ export default class ItemPagination extends React.Component {
     const items = []
 
     for (var i = 0; i < this.props.data.totalPages; i++) {
-      items[i] = this.paginationItem(i+1,this.props.data.pageNo);
+      items[i] = this.paginationItem(i+1,this.props.data.pageNo,this.props.data.limit);
     }
+
+    console.log(this.props.data)
     
     return (      
       <Pagination aria-label="Page navigation example" className={"item-pagination"}>
+        <PaginationItem>
+          <button onClick={(e) => this.paginationHandler({ pageNo: 1, limitPerPage: this.props.data.limit }, e)}>First</button>
+        </PaginationItem>
+        <PaginationItem>
+          <button onClick={(e) => this.paginationHandler({ pageNo: (this.props.data.pageNo <= 1) ? 1 : this.props.data.pageNo - 1, limitPerPage: this.props.data.limit }, e)}>Previous</button>
+        </PaginationItem>
         {
           this.props.data.totalPages !== 0
           ?
@@ -45,6 +53,12 @@ export default class ItemPagination extends React.Component {
           :
             null
         }
+        <PaginationItem>
+          <button onClick={(e) => this.paginationHandler({ pageNo: this.props.data.pageNo + 1, limitPerPage: this.props.data.limit }, e)}>Next</button>
+        </PaginationItem>
+        <PaginationItem>
+          <button onClick={(e) => this.paginationHandler({ pageNo: this.props.data.totalPages, limitPerPage: this.props.data.limit }, e)}>Last</button>
+        </PaginationItem>
       </Pagination>
     );
   }
