@@ -22,7 +22,7 @@ export default class PageSelect extends React.Component {
                 this.props.data  !== null
                 ? 
                 this.props.data.items.map((item) => (
-                    <option selected={((id === item._id) ? "selected" : null)} key={'option-'+item._id} value={item._id}>{item.title}</option>
+                    <option selected={((id === item._id) ? "selected" : null)} key={'option-'+item._id} value={item._id}>{item.title || "untitled"}</option>
                     ))
                 : 
                     null

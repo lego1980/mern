@@ -89,6 +89,7 @@ export default class CategoryForm extends React.Component {
   resetHandler = () => {
     this.setState({
       id :  '',
+      dataId :  '',
       title :  '',
       subtitle : '',
       keywords : '',
@@ -189,6 +190,7 @@ export default class CategoryForm extends React.Component {
     } else {
       this.setState({
         id :  next.selectedCategory._id,
+        dataId: next.selectedCategory.dataId || '',
         title :  next.selectedCategory.title,
         subtitle :  next.selectedCategory.subtitle,
         keywords : next.selectedCategory.keywords,

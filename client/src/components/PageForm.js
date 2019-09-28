@@ -6,6 +6,7 @@ export default class PageForm extends React.Component {
  
   state = {
     id :  '',
+    dataId :  '',
     title :  '',
     subtitle :  '',
     keywords : '',
@@ -54,6 +55,7 @@ export default class PageForm extends React.Component {
   updateHandler = () => {
     let obj = Object.assign(this.state);    
     // revisit
+    obj.dataId = '';
     obj.updatedBy = '';
     obj.updatedAt = new Date().getTime();
     if (obj.createdAt === '') {
@@ -82,13 +84,14 @@ export default class PageForm extends React.Component {
     obj.createdBy = '';
     obj.createdAt = new Date().getTime();
     obj.updatedBy = '';
-    obj.updatedAt = new Date().getTime();  
+    obj.updatedAt = new Date().getTime();
     this.props.addHandler(obj);
   }
 
   resetHandler = () => {
     this.setState({
       id :  '',
+      dataId :  '',
       title :  '',
       subtitle : '',
       keywords : '',
@@ -189,6 +192,7 @@ export default class PageForm extends React.Component {
     } else {
       this.setState({
         id :  next.selectedItem._id,
+        dataId: next.selectedItem.dataId || '',
         title :  next.selectedItem.title,
         subtitle :  next.selectedItem.subtitle,
         keywords : next.selectedItem.keywords,
