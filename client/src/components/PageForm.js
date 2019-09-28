@@ -221,7 +221,7 @@ export default class PageForm extends React.Component {
             this.state.id !== ''
             ?
               <FormGroup>
-                <Input type="text" name="title" id="title" readOnly value={this.state.id} />
+                <Input type="text" name="id" id="id" readOnly value={this.state.id} />
               </FormGroup>
             :
               null

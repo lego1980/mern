@@ -37,7 +37,7 @@ export default class PageTable extends React.Component {
                         ? 
                             this.props.data.items.map((item, i) => (
                                 <tr className={((id === item._id) ? "selected-row" : "")} key={'tr-'+item._id} onClick={()=>this.onClickHandler(item._id)}>
-                                    <td>{i+1}</td>
+                                    <td>{(((this.props.data.pageNo-1) * this.props.data.limit) + (i+1))}</td>
                                     <td>{item._id}</td>
                                     <td><a href={"http://localhost:3000/"+item.category+"/"+item.url} target="_blank" rel="noopener noreferrer">{item.title}</a></td>
                                     <td>{item.category}</td>

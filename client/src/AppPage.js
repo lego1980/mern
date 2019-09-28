@@ -83,7 +83,7 @@ class AppPage extends Component {
 
   addPage = (obj) => {
     let that = this;
-    axios.post(this.state.apiUrl + "/item", obj).then(res => {
+    axios.post(that.state.http + that.state.api + that.state.apiVersion + that.state.apiTarget + "/" + that.state.collection, obj).then(res => {
       that.getPages();
     });   
   };
@@ -91,7 +91,7 @@ class AppPage extends Component {
   deletePage = (obj) => {
     let that = this;
     let id = obj.id;
-    axios.delete(this.state.apiUrl + "/item/" + id).then(res => {
+    axios.delete(that.state.http + that.state.api + that.state.apiVersion + that.state.apiTarget + "/" + that.state.collection + "/" + id).then(res => {
       that.getPages();
       that.setState({ selectedItem : '' }) 
     });
@@ -100,7 +100,7 @@ class AppPage extends Component {
   updatePage = (obj) => {
     let that = this;
     let id = obj.id;
-    axios.post(this.state.apiUrl + "/item/" + id, obj).then(res => {
+    axios.post(that.state.http + that.state.api + that.state.apiVersion + that.state.apiTarget + "/" + that.state.collection + "/" + id, obj).then(res => {
       that.getPages();
       that.setState({ selectedItem : '' }) 
     });   

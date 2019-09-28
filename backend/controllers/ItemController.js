@@ -58,7 +58,7 @@ exports.get_all_items_pagination = (req, res, next) => {
         .exec()
         .then(result => {
             //set total pages
-            totalPages = (result.length !== 0) ? Math.ceil((count.length / result.length) * 1) : 0;
+            totalPages = (result.length !== 0) ? Math.ceil((count.length / limit) * 1) : 0;
             const response = {
                 limit: limit,
                 pageNo: pageNo,
