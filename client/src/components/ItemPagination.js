@@ -52,10 +52,10 @@ export default class ItemPagination extends React.Component {
             null
         }
         <PaginationItem>
-          <button onClick={(e) => this.paginationHandler({ pageNo: this.props.data.pageNo + 1, limitPerPage: this.props.data.limit }, e)}>Next</button>
+          <button disabled={(this.props.data.pageNo === this.props.data.totalPages) ? true : null } onClick={(e) => this.paginationHandler({ pageNo: this.props.data.pageNo + 1, limitPerPage: this.props.data.limit }, e)}>Next</button>
         </PaginationItem>
         <PaginationItem>
-          <button onClick={(e) => this.paginationHandler({ pageNo: this.props.data.totalPages, limitPerPage: this.props.data.limit }, e)}>Last</button>
+          <button disabled={(this.props.data.pageNo === this.props.data.totalPages) ? true : null } onClick={(e) => this.paginationHandler({ pageNo: this.props.data.totalPages, limitPerPage: this.props.data.limit }, e)}>Last</button>
         </PaginationItem>
       </Pagination>
     );
