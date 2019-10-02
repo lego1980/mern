@@ -58,7 +58,7 @@ exports.get_all_items_pagination = (req, res, next) => {
         .exec()
         .then(result => {
             //set total pages
-            totalPages = (result.length !== 0) ? Math.ceil((count.length / limit) * 1) : 0;
+            totalPages = (result.length !== 0) ? Math.ceil(count.length / limit) : 0;
             const response = {
                 limit: limit,
                 pageNo: pageNo,
@@ -133,7 +133,7 @@ exports.get_all_active_items_pagination = (req, res, next) => {
         .exec()
         .then(result => {
             //set total pages
-            totalPages = (result.length !== 0) ? Math.ceil((count.length / result.length) * 1) : 0;
+            totalPages = (result.length !== 0) ? Math.ceil(count.length / limit) : 0;
             const response = {
                 limit: limit,
                 pageNo: pageNo,
@@ -221,6 +221,45 @@ exports.get_all_active_items_by_category = (req, res, next) => {
         console.log(err)
         res.status(500).json({error: err, items: [], count: 0});
     });  
+}
+
+//get all acitve items by category with pagination
+exports.get_all_active_items_by_category_pagination = (req, res, next) => { 
+    let limit = limitQuery(req.query);
+    let pageNo = pageQuery(req.query);
+    let skip = 0;
+    let totalPages = 0;
+    ItemModel.find({ active : true, category : category })
+    .exec()
+    .then(count => {
+        //set skip
+        skip = limit * (pageNo - 1)
+        ItemModel.find({ active : true, category : category })
+        .limit(limit)
+        .skip(skip)
+        .collation({locale: "en" }) // case insensitive sorting
+        .sort(sortQuery(req.query))
+        .exec()
+        .then(result => {
+            //set total pages
+            totalPages = (result.length !== 0) ? Math.ceil(count.length / limit) : 0;
+            const response = {
+                limit: limit,
+                pageNo: pageNo,
+                totalPages: totalPages,
+                totalCount: count.length,
+                count: result.length,
+                items: result
+            };
+            res.status(200).json({response});    
+        }).catch(err => {
+            console.log(err)
+            res.status(500).json({error: err, items: [], count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit});
+        });    
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit});
+    });
 }
 
 //get item by category and url
