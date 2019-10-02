@@ -35,8 +35,6 @@ export default class ItemPagination extends React.Component {
     for (var i = 0; i < this.props.data.totalPages; i++) {
       items[i] = this.paginationItem(i+1,this.props.data.pageNo,this.props.data.limit);
     }
-
-    console.log(this.props.data)
     
     return (      
       <Pagination aria-label="Page navigation example" className={"item-pagination"}>

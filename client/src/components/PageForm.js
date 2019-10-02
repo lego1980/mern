@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter  } from 'reactstrap';
-import './PageForm.css'
+import slugify from '../utils/slugify';
+import './PageForm.css';
 
 export default class PageForm extends React.Component {
  
@@ -26,7 +27,11 @@ export default class PageForm extends React.Component {
     modalDelete: false,
     modalUpdate: false,
     modalFormUpdate: false,
-    formUpdate: false
+    formUpdate: false,
+    errors: {
+      title: 'Title is required',
+      content: 'Content is required'
+    }
   }  
   
   toggleModalFormUpdate = () => {
@@ -111,34 +116,50 @@ export default class PageForm extends React.Component {
       modalDelete: false,
       modalUpdate: false,
       modalFormUpdate: false,
-      formUpdate: false
+      formUpdate: false,
+      validation: false,
+      errors: {
+        title: 'Title is required',
+        content: 'Content is required'
+      }
     })
   }
 
-  //https://medium.com/dailyjs/web-developer-playbook-slug-a6dcbe06c284
-  slugify = (string) => {
-    const a = 'àáäâãåèéëêìíïîòóöôùúüûñçßÿœæŕśńṕẃǵǹḿǘẍźḧ·/_,:;'
-    const b = 'aaaaaaeeeeiiiioooouuuuncsyoarsnpwgnmuxzh------'
-    const p = new RegExp(a.split('').join('|'), 'g')
-    return string.toString().toLowerCase()
-      .replace(/\s+/g, '-') // Replace spaces with -
-      .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters in a with b
-      .replace(/&/g, '-and-') // Replace & with ‘and’
-      .replace(/[^\w-]+/g, '') // Remove all non-word characters such as spaces or tabs
-      .replace(/--+/g, '-') // Replace multiple — with single -
-      .replace(/^-+/, '') // Trim — from start of text
-      .replace(/-+$/, ''); // Trim — from end of text
-  }
-
   onChangeHandler = (event) => {
+    const { name, value } = event.target;
     this.setState({
-      [event.target.name]: event.target.value,
+      [name]: value,
       formUpdate: true
-    });    
+    });  
+    
+    // start validation
+    let errors = this.state.errors;
+    switch (name) {
+      case 'title': 
+        errors.title = value.length === 0 ? 'Title is required' : '';
+        break;
+      case 'content': 
+        errors.content = value.length === 0 ? 'Content is required' : '';
+        break;
+      default:
+        break;
+    }
+    this.setState({errors, [name]: value}, () => {
+      if (this.state.errors.title.length === 0 && this.state.errors.content.length === 0) {
+        this.setState({
+          validation : true
+        })
+      } else {
+        this.setState({
+          validation : false
+        })
+      }
+    })
+    // end validation
 
-    if (event.target.name === "title") {
+    if (name === "title") {
       this.setState({
-        url: this.slugify(event.target.value)
+        url: slugify(value)
       });  
     }
   }
@@ -212,7 +233,12 @@ export default class PageForm extends React.Component {
         modalDelete: false,
         modalUpdate: false,
         modalFormUpdate: false,
-        formUpdate: false
+        formUpdate: false,
+        validation: ((next.selectedItem.title.length !== 0 && next.selectedItem.content.length !== 0) ? true : false),
+        errors: {
+          title: ((next.selectedItem.title.length !== 0) ? '' : 'Title is required'),
+          content: ((next.selectedItem.content.length !== 0) ? '' : 'Content is required')
+        }
       })
     }
   }
@@ -242,7 +268,7 @@ export default class PageForm extends React.Component {
             <Input type="text" name="url" id="url" readOnly placeholder="enter a url" value={this.state.url} />
           </FormGroup>    
           <FormGroup>
-            <Label for="title">Title</Label>
+            <Label for="title">Title { this.state.errors.title !== '' ? this.state.errors.title : null }</Label>
             <Input type="text" name="title" id="title" placeholder="enter a title" value={this.state.title} onChange={(event) => this.onChangeHandler(event)} />
           </FormGroup>
           <FormGroup>
@@ -287,7 +313,7 @@ export default class PageForm extends React.Component {
             <Input type="textarea" name="description" id="description" placeholder="enter a description" value={this.state.description} onChange={(value) => this.onChangeHandler(value)} />
           </FormGroup>       
           <FormGroup>
-            <Label for="content">Content</Label>
+            <Label for="content">Content { this.state.errors.content !== '' ? this.state.errors.content : null }</Label>
             <Input type="textarea" name="content" id="content" placeholder="enter a content" value={this.state.content} onChange={(value) => this.onChangeHandler(value)} />
           </FormGroup>
           <FormGroup>
@@ -327,12 +353,12 @@ export default class PageForm extends React.Component {
               this.state.id !== '' && this.state.id !== null
               ?
                 <>
-                  <Button color="primary" onClick={(e) => this.toggleModalUpdate()}>Update</Button>
+                  <Button disabled={ this.state.validation === false ? true : null } color="primary" onClick={(e) => this.toggleModalUpdate()}>Update</Button>
                   <Button color="danger" onClick={(e) => this.toggleModalDelete()}>Delete</Button>
                 </>
               :
                 <>
-                  <Button color="primary" onClick={(e) => this.addHandler()}>Add</Button>  
+                  <Button disabled={ this.state.validation === false ? true : null } color="primary" onClick={(e) => this.addHandler()}>Add</Button>  
                   <Button onClick={(e) => this.resetHandler()}>Reset</Button> 
                 </>         
             }            
