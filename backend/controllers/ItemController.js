@@ -229,6 +229,7 @@ exports.get_all_active_items_by_category_pagination = (req, res, next) => {
     let pageNo = pageQuery(req.query);
     let skip = 0;
     let totalPages = 0;
+    const category = req.params.category;
     ItemModel.find({ active : true, category : category })
     .exec()
     .then(count => {
