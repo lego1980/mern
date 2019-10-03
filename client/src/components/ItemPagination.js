@@ -11,7 +11,7 @@ export default class ItemPagination extends React.Component {
   paginationItem = (page, selectedPage, limit) => {
     if (page === selectedPage) {
       return(
-        <PaginationItem active key={"page-"+page}>
+        <PaginationItem className={"btn-primary"} active key={"page-"+page}>
           <button href="#" onClick={(e) => this.paginationHandler({ pageNo: page, limitPerPage: limit }, e)}>
             {page}
           </button>
