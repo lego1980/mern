@@ -1,9 +1,9 @@
-
 const mongoose = require("mongoose");
 const ItemModel = require('../models/ItemModel');
 const sortQuery = require('../utils/sortQuery');
 const limitQuery = require('../utils/limitQuery');
 const pageQuery = require('../utils/pageQuery');
+const CategoryModel = require('../models/CategoryModel');
 
 //get all items count only
 exports.get_all_items_count = (req, res, next) => { 
@@ -153,6 +153,56 @@ exports.get_all_active_items_pagination = (req, res, next) => {
     });
 }
 
+//get all active items with pagination
+exports.get_all_active_items_pagination_with_categories = (req, res, next) => { 
+    let limit = limitQuery(req.query);
+    let pageNo = pageQuery(req.query);
+    let skip = 0;
+    let totalPages = 0;
+    let categoryResult = [];
+
+    CategoryModel.find({ active : true })
+    .exec()
+    .then(CategoryResult => {
+        categoryResult = CategoryResult;
+        ItemModel.find({ active : true })
+        .exec()
+        .then(count => {
+            //set skip
+            skip = limit * (pageNo - 1)
+            ItemModel.find({ active : true })
+            .limit(limit)
+            .skip(skip)
+            .collation({locale: "en" }) // case insensitive sorting
+            .sort(sortQuery(req.query))
+            .exec()
+            .then(result => {
+                //set total pages
+                totalPages = (result.length !== 0) ? Math.ceil(count.length / limit) : 0;
+                const response = {
+                    limit: limit,
+                    pageNo: pageNo,
+                    totalPages: totalPages,
+                    totalCount: count.length,
+                    count: result.length,
+                    items: result, 
+                    category: categoryResult
+                };
+                res.status(200).json({response});    
+            }).catch(err => {
+                console.log(err)
+                res.status(500).json({error: err, items: [], count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit, category : categoryResult});
+            });    
+        }).catch(err => {
+            console.log(err)
+            res.status(500).json({error: err, count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit, category : categoryResult});
+        });
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({error: err, count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit, category : categoryResult});
+    });    
+}
+
 //get all items by category count only
 exports.get_all_items_by_category_count = (req, res, next) => {   
     const category = req.params.category;
@@ -225,42 +275,54 @@ exports.get_all_active_items_by_category = (req, res, next) => {
 
 //get all acitve items by category with pagination
 exports.get_all_active_items_by_category_pagination = (req, res, next) => { 
+    
     let limit = limitQuery(req.query);
     let pageNo = pageQuery(req.query);
     let skip = 0;
     let totalPages = 0;
     const category = req.params.category;
-    ItemModel.find({ active : true, category : category })
+    let categoryResult = [];
+
+    CategoryModel.find({ active : true, category : category })
     .exec()
-    .then(count => {
-        //set skip
-        skip = limit * (pageNo - 1)
+    .then(CategoryResult => {
+        categoryResult = CategoryResult;
         ItemModel.find({ active : true, category : category })
-        .limit(limit)
-        .skip(skip)
-        .collation({locale: "en" }) // case insensitive sorting
-        .sort(sortQuery(req.query))
         .exec()
-        .then(result => {
-            //set total pages
-            totalPages = (result.length !== 0) ? Math.ceil(count.length / limit) : 0;
-            const response = {
-                limit: limit,
-                pageNo: pageNo,
-                totalPages: totalPages,
-                totalCount: count.length,
-                count: result.length,
-                items: result
-            };
-            res.status(200).json({response});    
+        .then(count => {
+            //set skip
+            skip = limit * (pageNo - 1)
+            ItemModel.find({ active : true, category : category })
+            .limit(limit)
+            .skip(skip)
+            .collation({locale: "en" }) // case insensitive sorting
+            .sort(sortQuery(req.query))
+            .exec()
+            .then(result => {
+                //set total pages
+                totalPages = (result.length !== 0) ? Math.ceil(count.length / limit) : 0;
+                const response = {
+                    limit: limit,
+                    pageNo: pageNo,
+                    totalPages: totalPages,
+                    totalCount: count.length,
+                    count: result.length,
+                    items: result,
+                    category: categoryResult
+                };
+                res.status(200).json({response});    
+            }).catch(err => {
+                console.log(err)
+                res.status(500).json({error: err, count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit, category : categoryResult});
+            });    
         }).catch(err => {
             console.log(err)
-            res.status(500).json({error: err, items: [], count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit});
-        });    
+            res.status(500).json({error: err, count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit, category : categoryResult});
+        });
     }).catch(err => {
         console.log(err)
-        res.status(500).json({error: err, count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit});
-    });
+        res.status(500).json({error: err, count: 0, totalPages: 0, totalPages: 0, pageNo: pageNo, limit: limit, category : categoryResult});
+    });    
 }
 
 //get item by category and url
