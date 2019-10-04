@@ -1,0 +1,47 @@
+html, body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+}
+
+.app {
+    font-size: 1.4rem;
+}
+
+
+.app .left-panel {
+    position: fixed;
+    width: 100%;
+    padding: 10px;
+    top: 5.0rem;
+    bottom: 0;
+    left: 0;
+    overflow-x: auto;
+    overflow-y: scroll;
+    z-index: 100;
+}
+
+.app .right-panel {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: -100%;
+    min-width: 300px;
+    width: 40%;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-left: 1px solid #cccccc; 
+    border-right: 1px solid #cccccc; 
+    overflow-x: hidden;
+    overflow-y: scroll;
+    z-index: 200;
+    box-shadow: -1px 0px 10px 0px #cccccc;
+    transition: right 300ms ease-in;
+}
+
+.app .right-panel.show {
+    right: 0;
+}    
+
+.app .right-panel form {
+    padding-bottom: 60px;
+}

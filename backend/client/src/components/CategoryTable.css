@@ -1,0 +1,65 @@
+.category-table {
+    position: relative;
+}
+
+.selected-row {
+    background: #f1f1f1;
+}
+
+
+.category-table button {
+    font-size: 1.4rem;
+    display: inline;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.category-table.table thead th {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.category-table tbody tr:hover {
+    cursor: pointer;
+}
+
+.category-table tr th:nth-child(1),
+.category-table tr td:nth-child(1) {
+    text-align:  right;
+    width: 1%;
+}
+
+.category-table tr th:nth-child(2),
+.category-table tr td:nth-child(2) {
+    text-align:  center;
+    width: 10%;
+}
+
+.category-table tr th:nth-child(3),
+.category-table tr td:nth-child(3) {
+    text-align:  center;
+    width: 20%
+}
+
+.category-table tr th:nth-child(4),
+.category-table tr td:nth-child(4) {
+    width: 10%
+}
+
+.category-table tr th:nth-child(5),
+.category-table tr td:nth-child(5) {
+    text-align:  center;
+    width: 10%
+}
+
+.category-table tr th:nth-child(6),
+.category-table tr td:nth-child(6) {
+    text-align:  center;
+    width: 10%
+}
+
+.category-table tr th:nth-child(7),
+.category-table tr td:nth-child(7) {
+    text-align:  center;
+    width: 5%
+}
