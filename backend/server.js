@@ -19,7 +19,7 @@ const dbRoute = 'mongodb+srv://rw-beta:1980Dbz4@cluster0-chh6c.mongodb.net/beta_
 // connects our back end code with the database
 mongoose.connect(dbRoute, { useNewUrlParser: true });
 let db = mongoose.connection;
-db.once('open', () => console.log('connected to the database'));
+db.once('open', function() { console.log('connected to the database') });
 // checks if connection with the database is successful
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
@@ -33,4 +33,4 @@ app.use(logger('dev'));
 app.use('/api', VersionApiRoute);
 
 // launch our backend into a port
-app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`, process.env.PORT));
+app.listen(API_PORT, function() { console.log(`LISTENING ON PORT ${API_PORT}`, process.env.PORT) });
