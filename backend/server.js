@@ -17,7 +17,7 @@ const VersionApiRoute = require('./routes/VersionApiRoute');
 // this is our MongoDB database
 const dbRoute = 'mongodb+srv://rw-beta:1980Dbz4@cluster0-chh6c.mongodb.net/beta_db?retryWrites=true&w=majority';
 // connects our back end code with the database
-mongoose.connect(dbRoute, { useNewUrlParser: true });
+mongoose.connect(dbRoute, { useUnifiedTopology: true, useNewUrlParser: true });
 let db = mongoose.connection;
 db.once('open', function() { console.log('connected to the database') });
 // checks if connection with the database is successful
