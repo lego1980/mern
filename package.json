@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "mac:start": "concurrently \"cd backend && node server.js\" \"cd client && npm run mac:start\"",
-    "win:start": "concurrently \"cd backend && node server.js\" \"cd client && npm run win:start\""
+    "mac:start": "concurrently \"cd backend && REACT_APP_BOX=API-DEV REACT_APP_BOX_NAME=API-DEV-1 node server.js\" \"cd client && npm run mac:start\"",
+    "win:start": "concurrently \"cd backend && set REACT_APP_BOX=API-DEV && set REACT_APP_BOX_NAME=API-DEV-1 && node server.js\" \"cd client && npm run win:start\""
   },
   "keywords": [],
   "author": "",
