@@ -36,4 +36,4 @@ app.use(logger('dev'));
 app.use('/api', ApiRoute);
 
 // launch our backend into a port
-app.listen(API_PORT, function() { console.log(`LISTENING ON PORT ${API_PORT}`, process.env.PORT, process.env.REACT_APP_BOX) });
+app.listen(API_PORT, function() { console.log(`LISTENING ON PORT ${API_PORT}`, process.env.PORT) });
