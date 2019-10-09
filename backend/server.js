@@ -18,7 +18,7 @@ const apiVersion = 1.0;
 const ApiRoute = require('./routes/ApiRoute');
 
 // this is our MongoDB database
-const dbRoute = dbEnv[process.env.REACT_APP_BOX].dbRoute; //'mongodb+srv://rw-beta:1980Dbz4@cluster0-chh6c.mongodb.net/beta_db?retryWrites=true&w=majority';
+const dbRoute = 'mongodb+srv://rw-beta:1980Dbz4@cluster0-chh6c.mongodb.net/beta_db?retryWrites=true&w=majority';
 // connects our back end code with the database
 mongoose.connect(dbRoute, { useUnifiedTopology: true, useNewUrlParser: true });
 let db = mongoose.connection;
@@ -36,4 +36,4 @@ app.use(logger('dev'));
 app.use('/api', ApiRoute);
 
 // launch our backend into a port
-app.listen(API_PORT, function() { console.log(`LISTENING ON PORT ${API_PORT}`, process.env.PORT) });
+app.listen(API_PORT, function() { console.log(`LISTENING ON PORT ${API_PORT}`, process.env.PORT, process.env.REACT_APP_BOX) });
