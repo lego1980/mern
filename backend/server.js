@@ -8,10 +8,10 @@ const API_PORT = process.env.PORT || 3001;
 const app = express();
 app.use(cors());
 
-const dbEnv = require('./dbEnv');
+//const dbEnv = require('./dbEnv');
 // console.log('dbEnv1',dbEnv['API-DEV'].dbRoute);
-console.log('process.env.REACT_APP_BOX',process.env.REACT_APP_BOX);
-console.log('process.env.REACT_APP_BOX_NAME',process.env.REACT_APP_BOX_NAME);
+//console.log('process.env.REACT_APP_BOX',process.env.REACT_APP_BOX);
+//console.log('process.env.REACT_APP_BOX_NAME',process.env.REACT_APP_BOX_NAME);
 
 // if (process.env.REACT_APP_BOX === "API-DEV") {
 //     console.log('if API-DEV',process.env.REACT_APP_BOX);
