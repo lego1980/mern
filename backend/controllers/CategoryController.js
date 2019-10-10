@@ -4,7 +4,7 @@ const sortQuery = require('../utils/sortQuery');
 const limitQuery = require('../utils/limitQuery');
 const pageQuery = require('../utils/pageQuery');
 
-//get list of categories count only
+//get list of categories count only tes
 exports.get_list_of_categories_count = (req, res, next) => { 
     CategoryModel.find()
     .exec()
@@ -347,7 +347,7 @@ exports.get_category_by_id = (req, res, next) => {
     });      
 }
 
-//delete category by id
+// delete category by id
 exports.delete_category_by_id = (req, res, next) => { 
     const id = req.params.id;
     CategoryModel.deleteOne({_id:id}).exec(        
