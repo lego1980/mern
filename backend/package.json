@@ -2,14 +2,6 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT",
-  "scripts": {
-    "mac:start": "concurrently \"cd backend && REACT_APP_BOX=API-DEV REACT_APP_BOX_NAME=API-DEV-1 node server.js\" \"cd client && npm run mac:start\"",
-    "win:start": "concurrently \"cd backend && set REACT_APP_BOX=API-DEV && set REACT_APP_BOX_NAME=API-DEV-1 && node server.js\" \"cd client && npm run win:start\""
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
