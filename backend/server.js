@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 
 const dbEnv = require('./dbEnv');
-// console.log('dbEnv1',dbEnv[process.env.REACT_APP_BOX].dbRoute);
+console.log('dbEnv1',dbEnv[process.env.REACT_APP_BOX].dbRoute);
 
 // api version 
 const apiVersion = 1.0;
