@@ -8,8 +8,8 @@ const API_PORT = process.env.PORT || 3001;
 const app = express();
 app.use(cors());
 
-const dbEnv = require('./dbEnv');
-// console.log('dbEnv1',dbEnv[process.env.REACT_APP_BOX].dbRoute);
+// const dbEnv = require('./dbEnv'); 
+// console.log('dbEnv',dbEnv[process.env.REACT_APP_BOX].dbRoute);
 
 // api version 
 const apiVersion = 1.0;
