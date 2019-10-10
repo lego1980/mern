@@ -9,7 +9,16 @@ const app = express();
 app.use(cors());
 
 const dbEnv = require('./dbEnv');
-// console.log('dbEnv1',dbEnv[process.env.REACT_APP_BOX].dbRoute);
+// console.log('dbEnv1',dbEnv['API-DEV'].dbRoute);
+// console.log('process.env.REACT_APP_BOX',process.env.REACT_APP_BOX);
+// console.log('process.env.REACT_APP_BOX_NAME',process.env.REACT_APP_BOX_NAME);
+
+// if (process.env.REACT_APP_BOX === "API-DEV") {
+//     console.log('if API-DEV',process.env.REACT_APP_BOX);
+//     console.log('dbRoute',dbEnv[process.env.REACT_APP_BOX].dbRoute);
+// } else {
+//     console.log('else API-DEV',process.env.REACT_APP_BOX);
+// }
 
 // api version 
 const apiVersion = 1.0;
@@ -18,7 +27,7 @@ const apiVersion = 1.0;
 const ApiRoute = require('./routes/ApiRoute');
 
 // this is our MongoDB database
-const dbRoute = 'mongodb+srv://rw-beta:1980Dbz4@cluster0-chh6c.mongodb.net/beta_db?retryWrites=true&w=majority';
+const dbRoute = dbEnv[process.env.REACT_APP_BOX].dbRoute; //'mongodb+srv://rw-beta:1980Dbz4@cluster0-chh6c.mongodb.net/beta_db?retryWrites=true&w=majority';
 // connects our back end code with the database
 mongoose.connect(dbRoute, { useUnifiedTopology: true, useNewUrlParser: true });
 let db = mongoose.connection;
